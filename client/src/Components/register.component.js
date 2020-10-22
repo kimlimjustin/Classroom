@@ -1,6 +1,6 @@
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
-import URL from "./backend.url.component";
+import URL from "../Static/Backend.url.static";
 import Cookies from "universal-cookie";
 
 const Register = () => {

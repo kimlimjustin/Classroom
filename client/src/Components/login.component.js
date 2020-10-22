@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Axios from "axios";
-import URL from "./backend.url.component";
+import URL from "../Static/Backend.url.static";
 import Cookies from "universal-cookie";
 
 const Login = () => {

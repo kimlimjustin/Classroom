@@ -3,6 +3,8 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const User = require('../../models/user.model');
+const querystring = require('querystring');
+const { RSA_NO_PADDING } = require('constants');
 
 //Get Security key for token generating in .env file
 require('dotenv').config();
@@ -13,6 +15,22 @@ const generateToken = () => {
     const randomToken = require('random-token').create(SECURITY_KEY);
     return randomToken(50);
 }
+
+router.get('/', (req, res) => {
+    if(!req.query.key) res.status(403).json("Permisison denied.")
+    else{
+        const key = req.query.key;
+        if(key !== SECURITY_KEY) res.status(403).json("Permission denied.")
+        else{
+            User.find({})
+            .then(users => {
+                res.json(users)
+            })
+            .catch(err => res.status(500).json("Error: "+err))
+        }
+    }
+})
+
 //register user
 router.post('/register', jsonParser, (req, res) => {
     const {username, password, email} = req.body;
@@ -47,7 +65,7 @@ router.post('/login', (req, res) => {
                 if(isMatch){
                     const token = generateToken();
                     user.token = token;
-                    res.cookie('token', token, {httpOnly: true, maxAge: 604800000, path: '/'});
+                    user.save();
                     res.json({"message": "Success", token});
                 }
                 else res.status(400).json("Password doesn't match")
@@ -56,10 +74,5 @@ router.post('/login', (req, res) => {
     })
 })
 
-//logout the user
-router.post('/logout', (req, res) => {
-    res.cookie("token", {expires: Date.now()});
-    res.json({"mesage": "Success"})
-})
 
 module.exports = router;
