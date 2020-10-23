@@ -63,6 +63,7 @@ const Profile = () => {
                     <p className="text-label">Email: {userInfo.email}</p>
                     <p className="text-label">Password: Your password</p>
                     <h4><NavLink to="/profile/edit" className = "link">Edit Profile</NavLink></h4>
+                    <h4><NavLink to="/logout" className = "link text-danger">Logout</NavLink></h4>
                 </div>
             </div>
         </div>

@@ -25,6 +25,11 @@ const ClassSchema = new Schema({
     students: {
         type: Array,
         required: false
+    },
+    owner: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: "User"
     }
 }, {
     timestamps: true
