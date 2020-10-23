@@ -6,6 +6,7 @@ import Cookies from "universal-cookie";
 const Login = () => {
     const [inputEmail, setInputEmail] = useState('');
     const [inputPassword, setInputPassword] = useState('');
+    const [error, setError] = useState('');
 
     const Submit = (e) => {
         e.preventDefault();
@@ -17,12 +18,14 @@ const Login = () => {
             //return to home page
             window.location = "/";
         })
+        .catch(() => setError("Something went wrong. Please try again."))
     }
 
     return(
         <div className="container">
             <form className="margin box box-shadow text-dark" onSubmit={Submit}>
                 <h1 className="box-title">Login user</h1>
+                <h4 className="form-error">{error}</h4>
                 <div className="form-group">
                     <p className="form-label">Email:</p>
                     <input type="email" className="form-control" value={inputEmail} onChange = {({target: {value}}) => setInputEmail(value)} />

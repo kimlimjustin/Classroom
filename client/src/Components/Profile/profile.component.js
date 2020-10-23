@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import UserInfo from "../Library/UserInfo";
+import UserInfo from "../../Library/UserInfo";
 import Cookies from "universal-cookie";
-import HomeNavbar from "./Navbar/home.navbar";
-import DefaultProfilePicture from "../Icons/profile.png";
-import URL from "../Static/Backend.url.static";
+import HomeNavbar from "../Navbar/home.navbar";
+import DefaultProfilePicture from "../../Icons/profile.png";
+import URL from "../../Static/Backend.url.static";
 import Axios from "axios";
+import { NavLink } from "react-router-dom";
 
 const Profile = () => {
     const [userInfo, setUserInfo] = useState('');
@@ -26,25 +27,27 @@ const Profile = () => {
         const token = new Cookies().get('token');
         setInfo("Uploading image...");
         const formData = new FormData();
-        formData.append('myfile', e.target.files[0]);
-        formData.append('token', token);
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data',
-            }
-        };
-        Axios.post(`${URL}/users/profile_picture`, formData, config)
-        .then((res) => {
-            setProfile(`${URL}/${res.data}`);
-            setInfo("");
-        })
+        if(e.target.files[0]){
+            formData.append('myfile', e.target.files[0]);
+            formData.append('token', token);
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data',
+                }
+            };
+            Axios.post(`${URL}/users/profile_picture`, formData, config)
+            .then((res) => {
+                setProfile(`${URL}/${res.data}`);
+                setInfo("");
+            })
+        }
     }
 
     return(
         <div className="container-fluid">
             <HomeNavbar />
             <div className="container">
-                <div className="margin box box-shadow text-dark">
+                <div className="margin-top-bottom box box-shadow text-dark">
                 <h1 className="box-title">Your account information:</h1>
                 <h4>{info}</h4>
                     <div className="center">
@@ -59,6 +62,7 @@ const Profile = () => {
                     <p className="text-label">Username: {userInfo.username}</p>
                     <p className="text-label">Email: {userInfo.email}</p>
                     <p className="text-label">Password: Your password</p>
+                    <h4><NavLink to="/profile/edit" className = "link">Edit Profile</NavLink></h4>
                 </div>
             </div>
         </div>
