@@ -2,6 +2,7 @@ import React from "react";
 
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
+import ZeroFourZero from "./Components/Error/404.component";
 import Home from "./Components/home.component";
 import Login from "./Components/login.component";
 import Logout from "./Components/logout.component";
@@ -18,6 +19,7 @@ const App = () => (
             <Route path = "/logout" component = {Logout} />
             <Route path = "/profile/edit" component = {EditProfile} />
             <Route path = "/profile" component = {Profile} />
+            <Route path = "*" component = {ZeroFourZero} />
         </Switch>
     </Router>
 )

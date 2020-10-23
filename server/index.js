@@ -29,7 +29,9 @@ app.use(express.static(path.join(__dirname, "/public/")));
 
 //including routers
 const userRouter = require('./Router/User/user.router');
+const classRouter = require('./Router/Class/class.router');
 app.use('/users', userRouter)
+app.use('/class', classRouter)
 
 //listening to the port
 const PORT = process.env.PORT || 5000;
@@ -41,4 +43,9 @@ mongoose.connect(URI, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTo
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
+})
+
+//404 error handler
+app.use(function (req, res, next) {
+	res.status(404).sendFile(__dirname + "/error/404.html")
 })
