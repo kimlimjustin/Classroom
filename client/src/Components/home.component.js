@@ -1,21 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import UserInfo from "../Library/UserInfo";
 import Cookies from "universal-cookie";
-import DefaultProfile from "../Icons/profile.png";
+import HomeNavbar from "./Navbar/home.navbar";
+
 
 const Home = () => {
+    const [userInfo, setUserInfo] = useState('');
+
     useEffect(() => {
         const token = new Cookies().get('token');
-        UserInfo(token).then((res) => console.log(res))
+        UserInfo(token).then((res) =>{if(res) setUserInfo(res); else window.location = "/login"})
     }, [])
 
     return(
         <div className="container-fluid">
-            <nav className='bg-white text-dark topnav'>
-                <p className="nav-logo">Classroom</p>
-                <img src = {DefaultProfile} alt="Profile Logo" className="nav-right pp"></img>
-                <span className="nav-right">+</span>
-            </nav>
+            <HomeNavbar />
             <div className = "container">
         
             </div>

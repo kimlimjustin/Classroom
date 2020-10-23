@@ -3,8 +3,10 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const User = require('../../models/user.model');
-const querystring = require('querystring');
-const { RSA_NO_PADDING } = require('constants');
+const fs = require('fs');
+const sharp = require('sharp');
+const multer = require('multer');
+const path = require('path')
 
 //Get Security key for token generating in .env file
 require('dotenv').config();
@@ -74,5 +76,40 @@ router.post('/login', (req, res) => {
     })
 })
 
+
+//Update profile picture
+router.post('/profile_picture', jsonParser, (req, res)=> {
+    const storage = multer.diskStorage({
+        destination: "./public/",
+        filename: function(req, file, cb){
+           cb(null,"PROFILE-PICTURE-" + Date.now() + path.extname(file.originalname));
+        }
+    });
+
+    //Save user profile picture
+    const upload = multer({
+        storage: storage,
+        limits: {fileSize: 1000000},
+    }).single("myfile")
+
+    upload(req, res, () => {
+        if(!req.body.token) res.status(403);
+        User.findOne({token: req.body.token}, (err, user)=> {
+            if(user.profile_picture) {
+                fs.unlink(user.profile_picture.destination + user.profile_picture.filename,  (err)=> {if(err)console.log(err)})
+            }
+            if(err) res.status(400).json("Error: "+err);
+            const resize = async function(){
+                await sharp(req.file.destination + req.file.filename)
+                .resize(900, 900)
+                .toBuffer((err, buffer) => fs.writeFile(req.file.destination + req.file.filename, buffer, (e) => {}))
+            }
+            resize()
+            .then(result => user.profile_picture = req.file)
+            .then(result => user.save())
+            .then(result => res.json(req.file.filename))
+        }).catch(err => res.status(400).json("Error: "+err));
+    });
+})
 
 module.exports = router;

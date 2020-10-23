@@ -21,4 +21,17 @@
 }
 .pp{
     max-width: 1.5rem;
+    border-radius: 50%;
+}
+
+.nav-logo:hover{
+    cursor: context-menu;
+}
+
+.profile-pp{
+    width: 200px;
+    border-radius: 50%;
+}
+#upload-profile-picture{
+    display: none;
 }

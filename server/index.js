@@ -4,6 +4,7 @@ const http = require('http');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const socketio = require('socket.io');
+const path = require('path');
 
 //load the environment variable
 require('dotenv').config();
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname, "/public/")));
 
 
 //including routers

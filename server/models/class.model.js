@@ -17,6 +17,14 @@ const ClassSchema = new Schema({
     archived: {
         type: Boolean,
         default: false,
+    },
+    teacher: {
+        type: Array,
+        required: true
+    },
+    students: {
+        type: Array,
+        required: false
     }
 }, {
     timestamps: true
