@@ -74,3 +74,26 @@
     margin-left: 50px;
     color: #000;
 }
+
+.class{
+    width: 200px;
+    height: 200px;
+    float: left;
+    margin: 10px;
+    overflow: hidden;
+}
+.sidenav-title{
+    margin: 10px 0;
+}
+
+.sidenav-item{
+    padding: 5px 10px;
+    border-top: 1px solid #e4dcdc;
+    border-bottom: 1px solid #e4dcdc;
+}
+
+@media only screen and (max-width: 600px){
+    .class{
+        width: -webkit-fill-available;
+    }
+}
