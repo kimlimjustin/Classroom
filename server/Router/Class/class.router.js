@@ -35,7 +35,7 @@ router.post("/create", jsonParser, (req, res) => {
         else{
             const _class = new Class({title, description, owner, code: nanoid(11)})
             _class.save()
-            .then(() => res.json("Success"))
+            .then(() => res.json({message: "Success", classId: _class._id}))
             .catch(err => res.status(400).json("Something went wrong."))
         }
     })
@@ -51,7 +51,7 @@ router.post('/teacher/add', jsonParser, (req, res) => {
                 if(err) res.status(500).json("Something went wrong")
                 else if(!__class) res.status(400).json("Class not found.")
                 else{
-                    if(__class.owner === teacher) res.status(400).json("The user already has a role in this class.")
+                    if(String(__class.owner) === teacher) res.status(400).json("The user already has a role in this class.")
                     else{
                         __class.teacher.push(teacher)
                         __class.save()
@@ -114,14 +114,17 @@ router.post('/students/add', jsonParser, (req, res) => {
         if(err) res.status(500).json("Something went wrong.")
         else if(!user) res.status(403).json("Permission denied.")
         else{
-            Class.findOne({_id: _class}, (err, __class) => {
+            Class.findOne({code: _class}, (err, __class) => {
                 if(err) res.status(500).json("Something went wrong")
                 else if(!__class) res.status(400).json("Class not found.")
                 else{
-                    __class.students.push(student)
-                    __class.save()
-                    .then(() => res.json("Success"))
-                    .catch(() => res.status(400).json("Something went wrong."))
+                    if(String(__class.owner) === student) res.status(400).json("The user already has a role in this class.")
+                    else{
+                        __class.students.push(student)
+                        __class.save()
+                        .then(() => res.json({message:"Success", classId: __class._id}))
+                        .catch(() => res.status(400).json("Something went wrong."))
+                    }
                 }
             })
         }
