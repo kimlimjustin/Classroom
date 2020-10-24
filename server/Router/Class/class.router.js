@@ -6,6 +6,13 @@ const User = require('../../models/user.model');
 const Class = require('../../models/class.model');
 const {nanoid} = require('nanoid');
 
+router.get('/get/class/:classId', (req, res) => {
+    const classId = req.params.classId;
+    Class.findById(classId)
+    .then(_class => res.json(_class))
+    .catch(() => res.status(400).json("Something went wrong"))
+})
+
 router.get("/get/created/:user", (req,res) => {
     const user = req.params.user;
     Class.find({owner: user})

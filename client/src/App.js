@@ -2,6 +2,7 @@ import React from "react";
 
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
+import Class from "./Components/Class/class.component";
 import JoinClass from "./Components/Class/join_class.component";
 import ZeroFourZero from "./Components/Error/404.component";
 import Home from "./Components/home.component";
@@ -21,6 +22,7 @@ const App = () => (
             <Route path = "/profile/edit" component = {EditProfile} />
             <Route path = "/profile" component = {Profile} />
             <Route path = "/class/join" component = {JoinClass} />
+            <Route path = "/class/:classId" component = {Class} />
             <Route path = "*" component = {ZeroFourZero} />
         </Switch>
     </Router>
