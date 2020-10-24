@@ -38,8 +38,8 @@ router.post('/register', jsonParser, (req, res) => {
     const {username, password, email} = req.body;
     //checking if username exist
     User.findOne({email}, (err, user) => {
-        if(err) res.status(500).json("Error has occured.")
-        else if(user) res.status(400).json("Username has been token.")
+        if(err) res.status(500).json("Error has occured. Please refresh page")
+        else if(user) res.status(400).json("Email has been token.")
         else{
             //create the user account
             const token = generateToken();
@@ -48,7 +48,7 @@ router.post('/register', jsonParser, (req, res) => {
             .then(() => {
                 res.json({"Message": "Success", token});
             })
-            .catch(err => res.status(500).json("Error has occured."));
+            .catch(err => res.status(500).json("Error has occured. Please refresh page"));
         }
     })
 })

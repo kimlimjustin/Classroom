@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const User = require('../../models/user.model');
 const Class = require('../../models/class.model');
+const {nanoid} = require('nanoid');
 
 router.get("/get/created/:user", (req,res) => {
     const user = req.params.user;
@@ -32,7 +33,7 @@ router.post("/create", jsonParser, (req, res) => {
         if(err) res.status(500).json("Something went wrong.")
         else if (!user) res.status(400).json("User not found")
         else{
-            const _class = new Class({title, description, owner})
+            const _class = new Class({title, description, owner, code: nanoid(11)})
             _class.save()
             .then(() => res.json("Success"))
             .catch(err => res.status(400).json("Something went wrong."))
@@ -50,10 +51,13 @@ router.post('/teacher/add', jsonParser, (req, res) => {
                 if(err) res.status(500).json("Something went wrong")
                 else if(!__class) res.status(400).json("Class not found.")
                 else{
-                    __class.teacher.push(teacher)
-                    __class.save()
-                    .then(() => res.json("Success"))
-                    .catch(err => res.status(400).json("Something went wrong."))
+                    if(__class.owner === teacher) res.status(400).json("The user already has a role in this class.")
+                    else{
+                        __class.teacher.push(teacher)
+                        __class.save()
+                        .then(() => res.json("Success"))
+                        .catch(err => res.status(400).json("Something went wrong."))
+                    }
                 }
             })
         }

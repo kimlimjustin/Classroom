@@ -27,12 +27,12 @@ const HomeNavbar = () => {
                 <NavLink to="/">Classes</NavLink>
             </div>
             <span className="nav-logo  nav-ham" onClick = {openNav}>☰</span>
-            <p className="nav-logo" onClick = {() => window.location = "/"}>Classroom</p>
+            <p className="nav-logo nav-ham" onClick = {() => window.location = "/"}>Classroom</p>
             {Profile === null
-            ?<img src = {DefaultProfile} alt="Default Profile Logo" className="nav-right pp" onClick = {() => window.location = "/profile"}></img>
-            :<img src = {Profile} alt="Profile Logo" className="nav-right pp" onClick = {() => window.location = "/profile"}></img>
+            ?<img src = {DefaultProfile} alt="Default Profile Logo" className="nav-right pp nav-ham" onClick = {() => window.location = "/profile"}></img>
+            :<img src = {Profile} alt="Profile Logo" className="nav-right pp nav-ham" onClick = {() => window.location = "/profile"}></img>
             }
-            <span className="nav-right nav-ham">+</span>
+            <span className="nav-right nav-ham" onClick = {() => window.location = "/class/join"}>+</span>
         </nav>
     )
 }

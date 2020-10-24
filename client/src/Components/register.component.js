@@ -2,6 +2,7 @@ import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import URL from "../Static/Backend.url.static";
 import Cookies from "universal-cookie";
+import { NavLink } from "react-router-dom";
 
 const Register = () => {
     const [inputEmail, setInputEmail] = useState('');
@@ -22,8 +23,13 @@ const Register = () => {
                 //return to home page
                 window.location = "/";
             })
+            .catch(err => setError(err.response.data));
         }
     }
+
+    useEffect(() => {
+        if(inputEmail.length > 0) setError('');
+    }, [inputEmail])
 
     //validating users' input
     useEffect(() => {
@@ -55,6 +61,9 @@ const Register = () => {
                 <div className="form-group">
                     <p className="form-label">Password Confirmation:</p>
                     <input type="password" className="form-control" value={inputPasswordConfirmation} onChange= {({target: {value}}) => setInputPasswordConfirmation(value)} />
+                </div>
+                <div className="form-group">
+                    <p className = "form-label">Already have account? <NavLink to="/login" className="link">Login</NavLink></p>
                 </div>
                 <div className="form-group">
                     <input type="submit"  className="form-control btn btn-dark" />

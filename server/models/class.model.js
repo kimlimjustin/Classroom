@@ -30,6 +30,11 @@ const ClassSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
         ref: "User"
+    },
+    code: {
+        type: String,
+        required: true,
+        unique: true
     }
 }, {
     timestamps: true

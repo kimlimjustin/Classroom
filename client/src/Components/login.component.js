@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Axios from "axios";
 import URL from "../Static/Backend.url.static";
 import Cookies from "universal-cookie";
+import { NavLink } from "react-router-dom";
 
 const Login = () => {
     const [inputEmail, setInputEmail] = useState('');
@@ -33,6 +34,9 @@ const Login = () => {
                 <div className="form-group">
                     <p className="form-label">Password:</p>
                     <input type="password" className="form-control" value={inputPassword} onChange= {({target: {value}}) => setInputPassword(value)} />
+                </div>
+                <div className="form-group">
+                    <p className = "form-label">Don't have account yet? <NavLink to="/register" className="link">Register</NavLink></p>
                 </div>
                 <div className="form-group">
                     <input type="submit"  className="form-control btn btn-dark" />
