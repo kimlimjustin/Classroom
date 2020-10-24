@@ -97,6 +97,7 @@
     overflow: hidden;
 }
 
+
 @media only screen and (max-width: 600px){
     .class{
         width: -webkit-fill-available;
@@ -105,4 +106,5 @@
     .option{
         width: 50% !important;
     }
+    .optc{width: 33.33% !important;}
 }

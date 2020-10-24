@@ -57,7 +57,7 @@ const ClassNavbar = ({classInfo}) => {
                     })}
                 </div>
                 <span className="nav-logo  nav-ham" onClick = {openNav}>☰</span>
-                <p className="nav-logo nav-ham nav-class-title" onClick = {() => window.location = "/"}>{classInfo.title}</p>
+                <p className="nav-logo nav-ham nav-class-title" onClick = {() => window.location = `/class/${classInfo._id}`}>{classInfo.title}</p>
                 {Profile === null
                 ?<img src = {DefaultProfile} alt="Default Profile Logo" className="nav-right pp nav-ham" onClick = {() => window.location = "/profile"}></img>
                 :<img src = {Profile} alt="Profile Logo" className="nav-right pp nav-ham" onClick = {() => window.location = "/profile"}></img>
@@ -67,10 +67,14 @@ const ClassNavbar = ({classInfo}) => {
                 <nav className="center bg-white text-dark topnav">
                     <p className="col-3 option nav-ham"><NavLink to = {`/class/${classInfo._id}`} className=" link">Stream</NavLink></p>
                     <p className="col-3 option nav-ham">Classwork</p>
-                    <p className="col-3 option nav-ham">People</p>
+                    <p className="col-3 option nav-ham"><NavLink to = {`/class/${classInfo._id}/people`} className="link">People</NavLink></p>
                     <p className="col-3 option nav-ham">Setting</p>
                 </nav>
-            : null}
+            : <nav className="center bg-white text-dark topnav">
+                <p className="col-4 nav-ham optc"><NavLink to = {`/class/${classInfo._id}`} className=" link">Stream</NavLink></p>
+                <p className="col-4 nav-ham optc">Classwork</p>
+                <p className="col-3 option nav-ham"><NavLink to = {`/class/${classInfo._id}/people`} className="link">People</NavLink></p>
+            </nav>}
         </nav>
     )
 }

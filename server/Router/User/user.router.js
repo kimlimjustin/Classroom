@@ -18,6 +18,7 @@ const generateToken = () => {
     return randomToken(50);
 }
 
+//get all users info(require security key)
 router.get('/', (req, res) => {
     if(!req.query.key) res.status(403).json("Permisison denied.")
     else{
@@ -28,6 +29,19 @@ router.get('/', (req, res) => {
             .then(users => {
                 res.json(users)
             })
+            .catch(err => res.status(500).json("Error: "+err))
+        }
+    }
+})
+//get a user info(require security key)
+router.get('/get/by/:id', (req, res) => {
+    if(!req.query.key) res.status(403).json("Permisison denied.")
+    else{
+        const key = req.query.key;
+        if(key !== SECURITY_KEY) res.status(403).json("Permission denied.")
+        else{
+            User.findById(req.params.id)
+            .then(user => res.json(user))
             .catch(err => res.status(500).json("Error: "+err))
         }
     }
