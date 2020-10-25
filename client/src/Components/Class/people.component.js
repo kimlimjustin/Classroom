@@ -48,10 +48,14 @@ const People = (params) => {
                     if(teacher){
                         if(teacher.profile_picture){
                             return <div key={teacher._id} className="box">
-                                <img src = {`${URL}/${teacher.profile_picture.filename}`} className="pp" /><b>&nbsp;{teacher.username}</b>
+                                <img src = {`${URL}/${teacher.profile_picture.filename}`} className="pp" alt={teacher.username} />
+                                <b>&nbsp;{teacher.username}</b> <span>({teacher.email})</span>
                                 </div>
                         }else{
-                            return <div key={teacher._id} className="box"><img src = {DefaultProfile} className="pp" /><b>&nbsp;{teacher.username}</b></div>
+                            return <div key={teacher._id} className="box">
+                                <img src = {DefaultProfile} className="pp" alt={teacher.username} />
+                                <b>&nbsp;{teacher.username}</b> <span>({teacher.email})</span>
+                                </div>
                         }
                     }else return null;
                 })}
@@ -60,11 +64,15 @@ const People = (params) => {
                     if(student){
                         if(student.profile_picture){
                             return <div key={student._id} className="box">
-                            <img src = {`${URL}/${student.profile_picture.filename}`} className="pp" /><b>&nbsp;{student.username}</b>
+                            <img src = {`${URL}/${student.profile_picture.filename}`} className="pp" alt={student.username} />
+                            <b>&nbsp;{student.username}</b> <span>({student.email})</span>
                             </div>
                         }
                         else{
-                            return <div key={student._id} className="box"><img src = {DefaultProfile} className="pp" /><b>&nbsp;{student.username}</b></div>
+                            return <div key={student._id} className="box">
+                                <img src = {DefaultProfile} className="pp" alt={student.username} />
+                                <b>&nbsp;{student.username}</b> <span>({student.email})</span>
+                                </div>
                         }
                     }else return null;
                 })}
