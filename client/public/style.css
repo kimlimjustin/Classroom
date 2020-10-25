@@ -97,6 +97,9 @@
     overflow: hidden;
 }
 
+.classinfo-description{
+    white-space: pre-line;
+}
 
 @media only screen and (max-width: 600px){
     .class{

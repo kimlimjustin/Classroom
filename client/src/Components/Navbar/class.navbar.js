@@ -68,7 +68,7 @@ const ClassNavbar = ({classInfo}) => {
                     <p className="col-3 option nav-ham"><NavLink to = {`/class/${classInfo._id}`} className=" link">Stream</NavLink></p>
                     <p className="col-3 option nav-ham">Classwork</p>
                     <p className="col-3 option nav-ham"><NavLink to = {`/class/${classInfo._id}/people`} className="link">People</NavLink></p>
-                    <p className="col-3 option nav-ham">Setting</p>
+                    <p className="col-3 option nav-ham"><NavLink to = {`/class/${classInfo._id}/setting`} className = "link" >Setting</NavLink></p>
                 </nav>
             : <nav className="center bg-white text-dark topnav">
                 <p className="col-4 nav-ham optc"><NavLink to = {`/class/${classInfo._id}`} className=" link">Stream</NavLink></p>
