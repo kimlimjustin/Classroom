@@ -148,6 +148,27 @@ router.post('/unarchive', jsonParser, (req, res) => {
     })
 })
 
+router.post('/students/register', jsonParser, (req, res) => {
+    const {token, _class, student} = req.body;
+    User.findOne({_id: student, token}, (err, user) => {
+        if(err) res.status(500).json("Something went wrong.")
+        else if(!user) res.status(403).json("Permission denied.")
+        else{
+            Class.findOne({code: _class}, (err, __class) => {
+                if(err) res.status(500).json("Something went wrong")
+                else if(!__class) res.status(400).json("Class not found.")
+                else{
+                    if(String(__class.owner) === student || __class.teacher.includes(student)) res.status(400).json("The user already has a role in this class.")
+                    __class.students.push(student)
+                    __class.save()
+                    .then(() => res.json({message:"Success", classId: __class._id}))
+                    .catch(() => res.status(400).json("Something went wrong."))
+                }
+            })
+        }
+    })
+})
+
 router.post('/students/add', jsonParser, (req, res) => {
     const {token, _class, student, owner} = req.body;
     User.findOne({_id: student}, (err, user) => {
@@ -204,6 +225,10 @@ router.post("/students/delete", jsonParser, (req, res) => {
             })
         }
     })
+})
+
+router.post("student/remove", jsonParser, (req, res) => {
+
 })
 
 router.post('/update', jsonParser, (req, res) => {

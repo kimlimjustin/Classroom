@@ -85,6 +85,10 @@ const ClassSetting = (params) => {
             })
         })
     }
+
+    const removeStudent = studentId => {
+        //Axios.post(`${URL}/class/student/delete`, {})
+    }
     
     return(
         <div className="container-fluid">
@@ -126,6 +130,7 @@ const ClassSetting = (params) => {
                             return <li key = {student._id}>{student.username} ({student.email})
                             <ul>
                                 <li><p className = "link" onClick = {() => toTeacher(student._id)}>Promote become a teacher</p></li>    
+                                <li><p className = "link" onClick = {() => removeStudent(student._id)}>Remove</p></li>    
                             </ul></li>
                         })
                         :<h3>There is no students yet. Send class code({classInfo.code}) to your student.</h3>}

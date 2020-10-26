@@ -48,7 +48,7 @@ const JoinClass = () => {
     const JoinClass = e => {
         e.preventDefault();
         if(joinError === ""){
-            Axios.post(`${URL}/class/students/add`, {token: token, _class: inputCode, student: userInfo._id})
+            Axios.post(`${URL}/class/students/register`, {token: token, _class: inputCode, student: userInfo._id})
             .then(res => window.location = `/class/${res.data.classId}`)
             .catch(() => setCreateError("Something went wrong."))
         }

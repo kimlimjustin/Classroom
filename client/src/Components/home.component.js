@@ -52,7 +52,7 @@ const Home = () => {
     }
 
     const Unenroll = (classId) => {
-        Axios.post(`${URL}/class/archive`, {token: userInfo.token, _class: classId, student: userInfo._id})
+        Axios.post(`${URL}/class/students/delete`, {token: userInfo.token, _class: classId, student: userInfo._id})
         .then(() => window.location = "/")
     }
 
