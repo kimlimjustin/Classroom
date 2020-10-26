@@ -59,7 +59,9 @@ const Archived = () => {
                                 <h1 className="box-title">{_class.title}</h1>
                                 <p className="box-text class-description">{_class.description}</p>
                             </div>
-                            <p className="box-option link" onClick = {() => Unarchive(_class._id, _class.owner)}>Unarchive</p>
+                            {!_class.archived || _class.owner === userInfo._id
+                            ?<p className="box-option link" onClick = {() => Unarchive(_class._id, _class.owner)}>Unarchive</p>
+                            :null}
                         </div>
                     }else return null;
                 })}

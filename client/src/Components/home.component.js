@@ -42,6 +42,7 @@ const Home = () => {
         if(userInfo._id !== owner){
             Axios.post(`${URL}/class/user/archive`, {_class: classId, student: userInfo._id, token: userInfo.token})
             .then(() => window.location = "/archived")
+            .catch(err => console.log(err.response))
         }
         else{
             if(window.confirm("Are you sure?")){
