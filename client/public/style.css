@@ -76,6 +76,10 @@
     color: #000;
 }
 
+.link{
+    cursor: pointer;
+}
+
 .class{
     width: 250px;
     float: left;

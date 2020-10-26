@@ -19,6 +19,7 @@ const Class = (params) => {
                 <div className="margin-top-bottom box box-shadow">
                     <h1 className="box-title">{classInfo.title}</h1>
                     <p className="box-text classinfo-description">{classInfo.description}</p>
+                    <h4>Class code: {classInfo.code}</h4>
                 </div>
             </div>
         </div>

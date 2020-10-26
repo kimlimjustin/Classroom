@@ -4,10 +4,13 @@ import Cookies from "universal-cookie";
 import UserInfo from "../../Library/UserInfo";
 import URL from "../../Static/Backend.url.static";
 import ClassNavbar from "../Navbar/class.navbar";
+import InfoById from "../../Library/InfoById";
 
 const ClassSetting = (params) => {
     const [classInfo, setClassInfo] = useState({});
     const [userInfo, setUserInfo] = useState(null);
+    const [teachers, setTeachers] = useState([]);
+    const [students, setStudents] = useState([]);
     const [inputTitle, setInputTitle] = useState('');
     const [inputDescription, setInputDescription] = useState('');
     const [updateInfo, setUpdateInfo] = useState('');
@@ -32,6 +35,21 @@ const ClassSetting = (params) => {
         }
     }, [classInfo])
 
+    useEffect(() => {
+        if(classInfo.teacher){
+            classInfo.teacher.forEach(teacher => {
+                InfoById(teacher)
+                .then(result => setTeachers(teachers => [...teachers, result]))
+            })
+        }
+        if(classInfo.students){
+            classInfo.students.forEach(student => {
+                InfoById(student)
+                .then(result => setStudents(students => [...students, result]))
+            })
+        }
+    }, [classInfo])
+
     const updateClassInfo = e => {
         e.preventDefault();
         Axios.post(`${URL}/class/update`, {title: inputTitle, description: inputDescription, _class: classInfo._id, token: userInfo.token, owner: userInfo._id})
@@ -44,6 +62,28 @@ const ClassSetting = (params) => {
             Axios.post(`${URL}/class/archive`, {owner: userInfo._id, _class: classInfo._id, token: userInfo.token})
             .then(() => window.location = "/")
         }
+    }
+
+    const toTeacher = studentId => {
+        Axios.post(`${URL}/class/teacher/add`, {owner: classInfo.owner, token: userInfo.token, _class: classInfo._id, teacher: studentId})
+        .then(() => {
+            InfoById(studentId)
+            .then(result => {
+                setTeachers(teachers => [...teachers, result]);
+                setStudents(students.filter(student => student._id !== result._id))
+            })
+        })
+    }
+
+    const toStudent = teacherId => {
+        Axios.post(`${URL}/class/students/add`, {owner: classInfo.owner, student: teacherId, token: userInfo.token, _class: classInfo.code})
+        .then(() => {
+            InfoById(teacherId)
+            .then(result => {
+                setStudents(students => [...students, result])
+                setTeachers(teachers.filter(teacher => teacher._id !== result._id))
+            })
+        })
     }
     
     return(
@@ -65,6 +105,32 @@ const ClassSetting = (params) => {
                         <input type = "submit" className="form-control btn btn-dark" />
                     </div>
                 </form>
+                <div className="margin-top-bottom box box-shadow">
+                    <h1 className="box-title">Teachers:</h1>
+                    <ul>
+                        {teachers.length > 0?
+                        teachers.map(teacher => {
+                            return <li key = {teacher._id}>{teacher.username} ({teacher.email})
+                            <ul>
+                                <li><p className="link" onClick = {() => toStudent(teacher._id)}>Demote become a student</p></li>
+                            </ul></li>
+                        })
+                        :<h3>There is no teacher yet.</h3>}
+                    </ul>
+                </div>
+                <div className="margin-top-bottom box box-shadow">
+                    <h1 className="box-title">Students:</h1>
+                    <ul>
+                        {students.length > 0?
+                        students.map(student => {
+                            return <li key = {student._id}>{student.username} ({student.email})
+                            <ul>
+                                <li><p className = "link" onClick = {() => toTeacher(student._id)}>Promote become a teacher</p></li>    
+                            </ul></li>
+                        })
+                        :<h3>There is no students yet. Send class code({classInfo.code}) to your student.</h3>}
+                    </ul>
+                </div>
                 <form className="margin-top-bottom box box-shadow" onSubmit = {ArchiveClass}>
                     <h1 className="box-title">Archive Class</h1>
                     <div className="form-group">
