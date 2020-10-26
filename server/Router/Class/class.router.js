@@ -5,6 +5,7 @@ const jsonParser = bodyParser.json();
 const User = require('../../models/user.model');
 const Class = require('../../models/class.model');
 const {nanoid} = require('nanoid');
+const { json } = require('express');
 
 router.get('/get/class/:classId', (req, res) => {
     const classId = req.params.classId;
@@ -95,6 +96,7 @@ router.post("/teacher/delete", jsonParser, (req, res) => {
     })
 })
 
+//owner archive class
 router.post('/archive', jsonParser, (req, res) => {
     const {token, _class, owner} = req.body;
     User.findOne({_id: owner, token}, (err, user) => {
@@ -106,6 +108,27 @@ router.post('/archive', jsonParser, (req, res) => {
                 else if(!__class) res.status(400).json("Class not found.")
                 else{
                     __class.archived = true
+                    __class.save()
+                    .then(() => res.json("Success"))
+                    .catch(err => res.status(400).json("Something went wrong."))
+                }
+            })
+        }
+    })
+})
+
+//owner unarchive class
+router.post('/unarchive', jsonParser, (req, res) => {
+    const {token, _class, owner} = req.body
+    User.findOne({_id: owner, token}, (err, user) => {
+        if(err) res.status(500).json("Something went wrong.")
+        else if(!user) res.status(403).json("Permission denied.")
+        else{
+            Class.findOne({_id: _class}, (err, __class) => {
+                if(err) res.status(500).json("Something went wrong")
+                else if(!__class) res.status(400).json("Class not found.")
+                else{
+                    __class.archived = false
                     __class.save()
                     .then(() => res.json("Success"))
                     .catch(err => res.status(400).json("Something went wrong."))
@@ -180,6 +203,53 @@ router.post('/update', jsonParser, (req, res) => {
                 }
             })
         } 
+    })
+})
+
+//user archive class
+router.post('/user/archive', jsonParser, (req, res) => {
+    const {token, student, _class} = req.body;
+    Class.findOne({students: {"$in": [student]}, _id: _class}, (err, __class) => {
+        if(err) res.status(500).json("Something went wrong.")
+        else if(!__class) res.status(400).json("Class not found")
+        else{
+            User.findOne({_id: student, token}, (err, user) => {
+                if(err) res.status(500).json("Something went wrong.")
+                else if(!user) res.status(400).json("User not found")
+                else{
+                    user.archived_class.push(__class._id)
+                    user.save()
+                    .then(() => res.json("Success"))
+                    .catch(() => res.status(400).json("Something went wrong."))
+                }
+            })
+        }
+    })
+    .catch(() => res.status(400).json("Something went wrong."))
+})
+
+//user unarchive class
+router.post('/user/unarchive', jsonParser, (req, res) => {
+    const {token, student, _class} = req.body;
+    Class.findOne({students: {"$in": [student]}, _id: _class}, (err, __class) => {
+        if(err) res.status(500).json("Something went wrong.")
+        else if(!__class) res.status(400).json("Class not found")
+        else{
+            User.findOne({_id: student, token}, (err, user) => {
+                if(err) res.status(500).json("Something went wrong.")
+                else if(!user) res.status(400).json("User not found")
+                else{
+                    if(user.archived_class.includes(__class._id)){
+                        for(let i = 0; i< user.archived_class.length; i++){
+                            if(String(user.archived_class[i]) === String(__class._id)) {user.archived_class.splice(i, 1); i-- }
+                        }
+                    }
+                    user.save()
+                    .then(() => res.json("Success"))
+                    .catch(() => res.status(400).json("Something went wrong."))
+                }
+            })
+        }
     })
 })
 

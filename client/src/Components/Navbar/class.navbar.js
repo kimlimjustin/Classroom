@@ -53,8 +53,11 @@ const ClassNavbar = ({classInfo}) => {
                     <span className="closebtn nav-ham" onClick={CloseNav}>&times;</span>
                     <NavLink to="/" className="sidenav-title">Classes</NavLink>
                     {classes.map(_class => {
-                        return <NavLink to = {`/class/${_class._id}`} key={_class._id} className="sidenav-item">{_class.title}</NavLink>
+                        if(!_class.archived && !userInfo.archived_class.includes(_class._id)){
+                            return <NavLink to = {`/class/${_class._id}`} key={_class._id} className="sidenav-item">{_class.title}</NavLink>
+                        }else return null;
                     })}
+                    <NavLink to = "/archived" className="sidenav-title">Archived Class</NavLink>
                 </div>
                 <span className="nav-logo  nav-ham" onClick = {openNav}>☰</span>
                 <p className="nav-logo nav-ham nav-class-title" onClick = {() => window.location = `/class/${classInfo._id}`}>{classInfo.title}</p>
@@ -68,7 +71,7 @@ const ClassNavbar = ({classInfo}) => {
                     <p className="col-3 option nav-ham"><NavLink to = {`/class/${classInfo._id}`} className=" link">Stream</NavLink></p>
                     <p className="col-3 option nav-ham">Classwork</p>
                     <p className="col-3 option nav-ham"><NavLink to = {`/class/${classInfo._id}/people`} className="link">People</NavLink></p>
-                    <p className="col-3 option nav-ham"><NavLink to = {`/class/${classInfo._id}/setting`} className = "link" >Setting</NavLink></p>
+                    <p className="col-3 option nav-ham"><NavLink to = {`/class/${classInfo._id}/setting`} className ="link">Setting</NavLink></p>
                 </nav>
             : <nav className="center bg-white text-dark topnav">
                 <p className="col-4 nav-ham optc"><NavLink to = {`/class/${classInfo._id}`} className=" link">Stream</NavLink></p>

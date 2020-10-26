@@ -30,6 +30,10 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         unique: true
+    },
+    archived_class: {
+        type: Array,
+        required: false
     }
 }, {
     timestamps: true,

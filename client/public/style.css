@@ -52,6 +52,7 @@
     overflow-x: hidden;
     padding-top: 60px;
     box-shadow: 10px 0 5px -5px #888;
+    overflow: scroll;
 }
 
 .sidenav a{
@@ -77,13 +78,17 @@
 
 .class{
     width: 250px;
-    height: 200px;
     float: left;
     margin: 10px;
-    overflow: hidden;
+    cursor: pointer;
+}
+
+.class-description{
+    height: 150px;
+    overflow-y: scroll;
 }
 .sidenav-title{
-    margin: 10px 0;
+    margin: 20px 0;
 }
 
 .sidenav-item{
@@ -97,8 +102,13 @@
     overflow: hidden;
 }
 
-.classinfo-description{
+.class-description{
     white-space: pre-line;
+}
+
+.box-option{
+    border-top: 1px solid #e4dcdc;
+    padding: 5px 0px;
 }
 
 @media only screen and (max-width: 600px){

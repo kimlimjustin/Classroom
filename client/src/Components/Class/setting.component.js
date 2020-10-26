@@ -10,6 +10,7 @@ const ClassSetting = (params) => {
     const [userInfo, setUserInfo] = useState(null);
     const [inputTitle, setInputTitle] = useState('');
     const [inputDescription, setInputDescription] = useState('');
+    const [updateInfo, setUpdateInfo] = useState('');
 
     useEffect(() => {
         const classId = params.match.params.classId;
@@ -34,7 +35,15 @@ const ClassSetting = (params) => {
     const updateClassInfo = e => {
         e.preventDefault();
         Axios.post(`${URL}/class/update`, {title: inputTitle, description: inputDescription, _class: classInfo._id, token: userInfo.token, owner: userInfo._id})
-        .then(res => console.log(res))
+        .then(() => setUpdateInfo("Class information updated."))
+    }
+
+    const ArchiveClass = e => {
+        e.preventDefault();
+        if(window.confirm("Are you sure?")){
+            Axios.post(`${URL}/class/archive`, {owner: userInfo._id, _class: classInfo._id, token: userInfo.token})
+            .then(() => window.location = "/")
+        }
     }
     
     return(
@@ -42,7 +51,8 @@ const ClassSetting = (params) => {
             <ClassNavbar classInfo = {classInfo} />
             <div className="container">
                 <form className="margin-top-bottom box box-shadow" onSubmit = {updateClassInfo}>
-                    <h1 className="box-title">Class Information:</h1>
+                    <h1 className="box-title">Update Class Information:</h1>
+                    <p className="text-success">{updateInfo}</p>
                     <div className="form-group">
                         <p className="form-label">Title:</p>
                         <input className="form-control" type = "text" value = {inputTitle} onChange = {({target: {value}}) => setInputTitle(value)} />
@@ -53,6 +63,12 @@ const ClassSetting = (params) => {
                     </div>
                     <div className="form-group">
                         <input type = "submit" className="form-control btn btn-dark" />
+                    </div>
+                </form>
+                <form className="margin-top-bottom box box-shadow" onSubmit = {ArchiveClass}>
+                    <h1 className="box-title">Archive Class</h1>
+                    <div className="form-group">
+                        <input type = "submit" className="form-control btn btn-dark" value="Archive" />
                     </div>
                 </form>
             </div>

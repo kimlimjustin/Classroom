@@ -38,17 +38,41 @@ const Home = () => {
         }
     }, [userInfo])
 
-    //useEffect(() => console.log(classes), [classes])
+    const Archive = (classId, owner) => {
+        if(userInfo._id !== owner){
+            Axios.post(`${URL}/class/user/archive`, {_class: classId, student: userInfo._id, token: userInfo.token})
+            .then(() => window.location = "/archived")
+        }
+        else{
+            if(window.confirm("Are you sure?")){
+                Axios.post(`${URL}/class/archive`, {token: userInfo.token, owner: userInfo._id, _class: classId})
+                .then(() => window.location = "/archived")
+            }
+        }
+    }
+
+    const Unenroll = (classId) => {
+        Axios.post(`${URL}/class/archive`, {token: userInfo.token, _class: classId, student: userInfo._id})
+        .then(() => window.location = "/")
+    }
 
     return(
         <div className="container-fluid">
             <HomeNavbar />
             <div className = "container">
                 {classes.map(_class  => {
-                    return <div className="class box box-shadow" key = {_class._id} onClick = {() => window.location = `/class/${_class._id}`}>
-                        <h1 className="box-title">{_class.title}</h1>
-                        <p className="box-text">{_class.description}</p>
-                    </div>
+                    if(!_class.archived && !userInfo.archived_class.includes(_class._id)){
+                        return <div className="class box box-shadow" key = {_class._id}>
+                            <div onClick = {() => window.location = `/class/${_class._id}`}>
+                                <h1 className="box-title">{_class.title}</h1>
+                                <p className="box-text class-description">{_class.description}</p>
+                            </div>
+                            <p className="box-option link" onClick = {() => Archive(_class._id, _class.owner)}>Archive</p>
+                            {_class.students.includes(userInfo._id)?
+                                <p className="box-option link" onClick = {() => Unenroll(_class._id)}>Unenroll</p>
+                            :<p className="box-option link" onClick = {() => window.location = `/class/${_class._id}/setting`}>Setting</p>}
+                        </div>
+                    }else return null;
                 })}
             </div>
         </div>

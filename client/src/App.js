@@ -2,6 +2,7 @@ import React from "react";
 
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
+import Archived from "./Components/Class/archived.component";
 import Class from "./Components/Class/class.component";
 import JoinClass from "./Components/Class/join_class.component";
 import People from "./Components/Class/people.component";
@@ -23,6 +24,7 @@ const App = () => (
             <Route path = "/logout" component = {Logout} />
             <Route path = "/profile/edit" component = {EditProfile} />
             <Route path = "/profile" component = {Profile} />
+            <Route path = "/archived" component = {Archived} />
             <Route path = "/class/join" component = {JoinClass} />
             <Route path = "/class/:classId/setting" component = {ClassSetting} />
             <Route path = "/class/:classId/people" component = {People} />
