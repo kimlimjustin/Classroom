@@ -83,10 +83,10 @@ router.post('/teacher/add', jsonParser, (req, res) => {
 })
 
 router.post("/teacher/delete", jsonParser, (req, res) => {
-    const {token, teacher, _class} = req.body;
-    User.findOne({_id: teacher, token: token}, (err, user) => {
+    const {token, teacher, _class, owner} = req.body;
+    User.findOne({_id: owner, token: token}, (err, user) => {
         if(err) res.status(500).json("Something went wrong.")
-        else if(!user) res.status(400).json("User not found.")
+        else if(!user) res.status(403).json("Permission denied.")
         else{
             Class.findOne({_id: _class}, (err, __class) => {
                 if(err) res.status(500).json("Something went wrong")
@@ -227,7 +227,28 @@ router.post("/students/delete", jsonParser, (req, res) => {
     })
 })
 
-router.post("student/remove", jsonParser, (req, res) => {
+router.post("/students/remove", jsonParser, (req, res) => {
+    const {token, owner, student, _class} = req.body;
+    User.findOne({_id: owner, token}, (err, user) => {
+        if(err) res.status(500).json("Something went wrong.")
+        else if(!user) res.status(403).json("Permission denied.")
+        else{
+            Class.findOne({_id: _class}, (err, __class) => {
+                if(err) res.status(500).json("Something went wrong")
+                else if(!__class) res.status(400).json("Class not found.")
+                else{
+                    if(__class.students.includes(student)){
+                        for(let i = 0; i< __class.students.length; i++){
+                            if(__class.students[i] === student) {__class.students.splice(i, 1); i-- }
+                        }
+                    }
+                    __class.save()
+                    .then(() => res.json("Success"))
+                    .catch(err => res.status(400).json("Something went wrong."))
+                }
+            })
+        }
+    })
 
 })
 

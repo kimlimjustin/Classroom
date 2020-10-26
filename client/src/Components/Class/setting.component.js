@@ -87,7 +87,21 @@ const ClassSetting = (params) => {
     }
 
     const removeStudent = studentId => {
-        //Axios.post(`${URL}/class/student/delete`, {})
+        Axios.post(`${URL}/class/students/remove`, {owner: classInfo.owner, student: studentId, token: userInfo.token, _class: classInfo._id})
+        .then(() => {
+            InfoById(studentId)
+            .then(result => {
+                setStudents(students.filter(student => student._id !== result._id))
+            })
+        })
+    }
+
+    const removeTeacher = teacherId => {
+        Axios.post(`${URL}/class/teacher/delete`, {owner: userInfo._id, teacher: teacherId, _class: classInfo._id, token: userInfo.token})
+        .then(() => {
+            InfoById(teacherId)
+            .then(result => setTeachers(teachers.filter(teacher => teacher._id !== result._id)))
+        })
     }
     
     return(
@@ -117,6 +131,7 @@ const ClassSetting = (params) => {
                             return <li key = {teacher._id}>{teacher.username} ({teacher.email})
                             <ul>
                                 <li><p className="link" onClick = {() => toStudent(teacher._id)}>Demote become a student</p></li>
+                                <li><p className="link" onClick = {() => removeTeacher(teacher._id)}>Remove</p></li>
                             </ul></li>
                         })
                         :<h3>There is no teacher yet.</h3>}

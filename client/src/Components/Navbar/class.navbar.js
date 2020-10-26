@@ -66,7 +66,7 @@ const ClassNavbar = ({classInfo}) => {
                 :<img src = {Profile} alt="Profile Logo" className="nav-right pp nav-ham" onClick = {() => window.location = "/profile"}></img>
                 }
             </nav>
-            {Object.keys(classInfo).length > 0 &&(classInfo.teacher.includes(userInfo._id) || classInfo.owner === userInfo._id)?
+            {Object.keys(classInfo).length > 0 && classInfo.owner === userInfo._id?
                 <nav className="center bg-white text-dark topnav">
                     <p className="col-3 option nav-ham"><NavLink to = {`/class/${classInfo._id}`} className=" link">Stream</NavLink></p>
                     <p className="col-3 option nav-ham">Classwork</p>
