@@ -27,6 +27,22 @@ router.post('/create', jsonParser, (req, res) => {
     })
 })
 
+router.get('/class/get/:class', jsonParser, (req, res) => {
+    const classId = req.params.class;
+    Class.findOne({_id: classId}, (err, _class) => {
+        if(err) res.status(500).json("Something went wrong.")
+        else if(!_class) res.status(404).json("Class not found.")
+        else{
+            Classwork.find({class: classId}, (err, classwork) => {
+                if(err) res.status(500).json("Something went wrong.")
+                else{
+                    res.json(classwork)
+                }
+            })
+        }
+    })
+})
+
 router.get('/get/:classwork', jsonParser, (req, res) => {
     const classwork = req.params.classwork;
     Classwork.findById(classwork)
@@ -84,6 +100,14 @@ router.post('/submit/answer', jsonParser, (req, res) => {
                 }
             })
         }
+    })
+})
+
+router.get('/get/answer/:classwork', jsonParser, (req, res) => {
+    const classworkId = req.params.classwork;
+    Classwork.findById(classworkId, (err, classwork) => {
+        if(err) res.status(500).json("Something went wrong.")
+        else res.json(classwork.answer)
     })
 })
 
