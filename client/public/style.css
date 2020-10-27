@@ -115,6 +115,45 @@
     padding: 5px 0px;
 }
 
+.add-classwork-btn{
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.classwork-modal{
+    display: none;
+    position: fixed;
+    z-index: 20;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.classwork-close{
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.classwork-close:hover,
+.classwork-close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.classwork-content{
+    background: #fefefe;
+    margin: auto;
+    height: 100vh;
+    padding: 20px;
+    width: 80%;
+    overflow: scroll
+}
+
 @media only screen and (max-width: 600px){
     .class{
         width: -webkit-fill-available;

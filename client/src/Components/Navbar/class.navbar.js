@@ -14,6 +14,7 @@ const ClassNavbar = ({classInfo}) => {
     useEffect(() => {
         const token = new Cookies().get('token');
         UserInfo(token).then(result => {
+            if(!result) window.location = "/"
             setUserInfo(result);
             if(result.profile_picture) setProfile(`${URL}/${result.profile_picture.filename}`)
         });
@@ -69,13 +70,13 @@ const ClassNavbar = ({classInfo}) => {
             {Object.keys(classInfo).length > 0 && classInfo.owner === userInfo._id?
                 <nav className="center bg-white text-dark topnav">
                     <p className="col-3 option nav-ham"><NavLink to = {`/class/${classInfo._id}`} className=" link">Stream</NavLink></p>
-                    <p className="col-3 option nav-ham">Classwork</p>
+                    <p className="col-3 option nav-ham"><NavLink to = {`/class/${classInfo._id}/classwork`} className="link">Classwork</NavLink></p>
                     <p className="col-3 option nav-ham"><NavLink to = {`/class/${classInfo._id}/people`} className="link">People</NavLink></p>
                     <p className="col-3 option nav-ham"><NavLink to = {`/class/${classInfo._id}/setting`} className ="link">Setting</NavLink></p>
                 </nav>
             : <nav className="center bg-white text-dark topnav">
                 <p className="col-4 nav-ham optc"><NavLink to = {`/class/${classInfo._id}`} className=" link">Stream</NavLink></p>
-                <p className="col-4 nav-ham optc">Classwork</p>
+                <p className="col-4 nav-ham optc"><NavLink to = {`/class/${classInfo._id}/classwork`} className="link">Classwork</NavLink></p>
                 <p className="col-3 option nav-ham"><NavLink to = {`/class/${classInfo._id}/people`} className="link">People</NavLink></p>
             </nav>}
         </nav>

@@ -117,7 +117,7 @@ const ClassSetting = (params) => {
                     </div>
                     <div className="form-group">
                         <p className="form-label">Description:</p>
-                        <textarea className='form-control' value = {inputDescription} onChange = {({target: {value}}) => setInputDescription(value)}></textarea>
+                        <textarea rows="5" className='form-control' value = {inputDescription} onChange = {({target: {value}}) => setInputDescription(value)}></textarea>
                     </div>
                     <div className="form-group">
                         <input type = "submit" className="form-control btn btn-dark" />

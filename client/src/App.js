@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import Archived from "./Components/Class/archived.component";
 import Class from "./Components/Class/class.component";
+import Classwork from "./Components/Class/classwork.component";
 import JoinClass from "./Components/Class/join_class.component";
 import People from "./Components/Class/people.component";
 import ClassSetting from "./Components/Class/setting.component";
@@ -26,6 +27,7 @@ const App = () => (
             <Route path = "/profile" component = {Profile} />
             <Route path = "/archived" component = {Archived} />
             <Route path = "/class/join" component = {JoinClass} />
+            <Route path = "/class/:classId/classwork" component = {Classwork} />
             <Route path = "/class/:classId/setting" component = {ClassSetting} />
             <Route path = "/class/:classId/people" component = {People} />
             <Route path = "/class/:classId" component = {Class} />
