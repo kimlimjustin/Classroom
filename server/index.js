@@ -30,8 +30,10 @@ app.use(express.static(path.join(__dirname, "/public/")));
 //including routers
 const userRouter = require('./Router/User/user.router');
 const classRouter = require('./Router/Class/class.router');
+const classworkRouter = require('./Router/Class/classwork.router');
 app.use('/users', userRouter)
 app.use('/class', classRouter)
+app.use('/classwork', classworkRouter)
 
 //listening to the port
 const PORT = process.env.PORT || 5000;
