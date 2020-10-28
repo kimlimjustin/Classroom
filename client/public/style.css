@@ -154,6 +154,10 @@
     overflow: scroll
 }
 
+.classwork-title{
+    font-family: "Roboto condensed";
+}
+
 @media only screen and (max-width: 600px){
     .class{
         width: -webkit-fill-available;

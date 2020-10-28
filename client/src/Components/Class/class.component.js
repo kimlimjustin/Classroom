@@ -2,15 +2,47 @@ import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import URL from "../../Static/Backend.url.static";
 import ClassNavbar from "../Navbar/class.navbar";
+import InfoById from "../../Library/InfoById";
+
+Object.size = function(obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};
+
 
 const Class = (params) => {
     const [classInfo, setClassInfo] = useState({});
+    const [classworks, setClassworks] = useState([]);
+    const [authorInfo, setAuthorInfo] = useState({});
 
     useEffect(() => {
         const classId = params.match.params.classId;
         Axios.get(`${URL}/class/get/class/${classId}`)
         .then(res => setClassInfo(() => res.data))
     }, [params.match.params.classId])
+
+    useEffect(() => document.title = classInfo.title, [classInfo])
+
+    useEffect(() => {
+        if(classInfo._id){
+            Axios.get(`${URL}/classwork/class/get/${classInfo._id}`)
+            .then(res => setClassworks(res.data))
+        }
+    }, [classInfo])
+
+    useEffect(() => {
+        if(classworks.length > 0){
+            classworks.forEach(classwork => {
+                InfoById(classwork.author)
+                .then(result => setAuthorInfo(prev => ({...prev, [classwork.author]: result})))
+            })
+        }
+    }, [classworks])
+
+    useEffect(() => console.log(Object.size(authorInfo)), [authorInfo])
 
     return(
         <div className = "container-fluid">
@@ -21,6 +53,14 @@ const Class = (params) => {
                     <p className="box-text classinfo-description">{classInfo.description}</p>
                     <h4>Class code: {classInfo.code}</h4>
                 </div>
+                {Object.size(authorInfo) > 0? classworks.map(classwork => (
+                    <div className="margin-top-bottom box box-shadow" key = {classwork._id}>
+                        <h3 className="classwork-title"><img src = {`${URL}/${authorInfo[classwork.author].profile_picture.filename}`} alt = "Author" className="pp" />
+                        {authorInfo[classwork.author].username} posted a new {classwork.types === "material"? <span>material</span>:<span>Assignment</span>}: 
+                        {classwork.title}</h3>
+                        <p>{classwork.description}</p>
+                    </div>
+                )): null}
             </div>
         </div>
     )

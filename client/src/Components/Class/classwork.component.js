@@ -18,7 +18,7 @@ const Classwork = (params) => {
     const [inputType, setInputType] = useState('material');
     const [inputTitle, setInputTitle] = useState('');
     const [inputDescription, setInputDescription] = useState('');
-    const [inputDeadline, setInputDealine] = useState(new Date().toJSON().substr(0, 16));
+    const [inputDeadline, setInputDealine] = useState('');
     const [inputChoices, setChoices] = useState([]);
     const [inputNewChoices, setInputNewChoices] = useState('');
 
@@ -50,6 +50,11 @@ const Classwork = (params) => {
 
     const createClasswork = e => {
         e.preventDefault();
+        Axios.post(`${URL}/classwork/create`, {
+            title: inputTitle, description: inputDescription, _class: ClassInfo._id, type: inputType, 
+            author: userInfo._id, duedate: inputDeadline, token: userInfo.token, options: inputChoices
+        })
+        .then(result => console.log(result))
     }
 
     return (
@@ -91,7 +96,8 @@ const Classwork = (params) => {
                             <p className="form-label">Options:</p>
                             <ul>
                                 {inputChoices.map(option => {
-                                    return <li key = {option}>{option}</li>
+                                    return <li key = {option}>{option} (<span className="link" 
+                                    onClick = {() => setChoices(inputChoices.filter(options => options !== option))}>Delete</span>)</li>
                                 })}
                             </ul>
                             <div className="box">
