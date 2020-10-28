@@ -106,7 +106,7 @@
     overflow: hidden;
 }
 
-.class-description{
+.class-description, .material-description{
     white-space: pre-line;
 }
 

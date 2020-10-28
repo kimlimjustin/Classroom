@@ -63,7 +63,7 @@ router.post('/update/:id', jsonParser, (req, res) => {
             classwork.type = type;
             classwork.options = options;
             classwork.save()
-            .then(() => res.json("Success"))
+            .then(() => res.json({message:"Success", classwork}))
             .catch(err => res.status(400).json("Error: "+err));
         }
     })

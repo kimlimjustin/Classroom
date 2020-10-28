@@ -89,7 +89,7 @@ const Classwork = (params) => {
                         </div>
                         <div className="form-group">
                             <p className="form-label">Title:</p>
-                            <input type = "text" className = "form-control" value ={inputTitle} onChange = {({target: {value}}) => setInputTitle(value)} />
+                            <input type = "text" className = "form-control" value ={inputTitle} onChange = {({target: {value}}) => setInputTitle(value)} required />
                         </div>
                         <div className="form-group">
                             <p className="form-label">Description {inputType !== "material"?<span>(optional)</span>:null}:</p>
