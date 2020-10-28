@@ -5,6 +5,15 @@ import UserInfo from '../../Library/UserInfo';
 import URL from '../../Static/Backend.url.static';
 import ClassNavbar from '../Navbar/class.navbar';
 
+Object.size = function(obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};
+
+
 const Classwork = (params) => {
     const [ClassInfo, setClassInfo] = useState({});
     const [userInfo, setUserInfo] = useState(null);
@@ -54,14 +63,14 @@ const Classwork = (params) => {
             title: inputTitle, description: inputDescription, _class: ClassInfo._id, type: inputType, 
             author: userInfo._id, duedate: inputDeadline, token: userInfo.token, options: inputChoices
         })
-        .then(result => console.log(result))
+        .then(result => window.location = `/class/${ClassInfo._id}/m/${result.data.id}`)
     }
 
     return (
         <div className="container-fluid">
             <ClassNavbar classInfo={ClassInfo} />
             <div className="container">
-                {userInfo!== null && (ClassInfo.owner === userInfo._id || ClassInfo.teacher.includes(userInfo._id))?
+                {Object.size(ClassInfo) > 0 && userInfo!== null && (ClassInfo.owner === userInfo._id || ClassInfo.teacher.includes(userInfo._id))?
                 <button className="margin-top-bottom btn btn-dark add-classwork-btn" onClick = {openClasswork}>Add classwork +</button>
                 :null}
             </div>
@@ -83,14 +92,19 @@ const Classwork = (params) => {
                             <input type = "text" className = "form-control" value ={inputTitle} onChange = {({target: {value}}) => setInputTitle(value)} />
                         </div>
                         <div className="form-group">
-                            <p className="form-label">Description (optional):</p>
-                            <textarea rows="5" type = "text" className="form-control" value={inputDescription} onChange = {({target: {value}}) => setInputDescription(value)} />
+                            <p className="form-label">Description {inputType !== "material"?<span>(optional)</span>:null}:</p>
+                            {inputType === "material"?
+                            <textarea rows="5" type = "text" className="form-control" value={inputDescription} 
+                            onChange = {({target: {value}}) => setInputDescription(value)} required />
+                            :<textarea rows="5" type = "text" className="form-control" value={inputDescription} onChange = {({target: {value}}) => setInputDescription(value)}/>
+                            }
                         </div>
+                        {inputType !== "material"?
                         <div className="form-group">
                             <p className="form-label">Due date (optional):</p>
                             <input type = "datetime-local" className="form-control" value={inputDeadline} onChange = {({target: {value}}) => setInputDealine(value)}
                             min={new Date().toJSON().substr(0, 16)} />
-                        </div>
+                        </div>:null}
                         {inputType === "multiple choice" || inputType === "checkbox"?
                         <div className="form-group">
                             <p className="form-label">Options:</p>

@@ -147,11 +147,11 @@
 
 .classwork-content{
     background: #fefefe;
-    margin: auto;
-    height: 100vh;
+    margin: calc(10vh - 20px) auto;
+    height: 80vh;
     padding: 20px;
     width: 80%;
-    overflow: scroll
+    overflow: scroll;
 }
 
 .classwork-title{

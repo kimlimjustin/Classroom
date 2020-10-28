@@ -19,7 +19,7 @@ router.post('/create', jsonParser, (req, res) => {
                 else{
                     const newClasswork = new Classwork({title, description, class: _class, types: type, duedate, options, author})
                     newClasswork.save()
-                    .then(() => res.json("Classwork created."))
+                    .then(() => res.json({message: "Classwork created.", id: newClasswork._id}))
                     .catch(err => res.status(400).json("Error: "+err))
                 }
             })
