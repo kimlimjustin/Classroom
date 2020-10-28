@@ -42,8 +42,6 @@ const Class = (params) => {
         }
     }, [classworks])
 
-    useEffect(() => console.log(Object.size(authorInfo)), [authorInfo])
-
     return(
         <div className = "container-fluid">
             <ClassNavbar classInfo={classInfo} />
@@ -54,10 +52,10 @@ const Class = (params) => {
                     <h4>Class code: {classInfo.code}</h4>
                 </div>
                 {Object.size(authorInfo) > 0? classworks.map(classwork => (
-                    <div className="margin-top-bottom box box-shadow" key = {classwork._id}>
+                    <div className="margin-top-bottom box box-shadow" key = {classwork._id} onClick = {() => window.location = `/class/${classInfo._id}/m/${classwork._id}`}>
                         <h3 className="classwork-title"><img src = {`${URL}/${authorInfo[classwork.author].profile_picture.filename}`} alt = "Author" className="pp" />
                         {authorInfo[classwork.author].username} posted a new {classwork.types === "material"? <span>material</span>:<span>Assignment</span>}: 
-                        {classwork.title}</h3>
+                        &nbsp;{classwork.title}</h3>
                         <p>{classwork.description}</p>
                     </div>
                 )): null}
