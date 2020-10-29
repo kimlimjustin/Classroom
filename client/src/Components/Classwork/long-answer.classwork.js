@@ -41,10 +41,10 @@ const LongAnswer = (params) => {
                 setClasswork(() => res.data);
                 setInputTitle(res.data.title);
                 setInputDescription(res.data.description);
-                setInputDealine(res.data.duedate.substr(0, 16));
+                if(res.data.duedate) setInputDealine(res.data.duedate.substr(0, 16));
             }else window.location = `/class/${classId}`
         })
-        .catch(() => window.location = `/class/${classId}`)
+        
     }, [classworkId, classId])
 
     useEffect(() => {
@@ -167,7 +167,7 @@ const LongAnswer = (params) => {
                     </form>
                 </div>
             </div>:null}
-            {classInfo.teacher && classwork.author && (classwork.author === userInfo._id || classInfo.teacher.includes(userInfo._id))?
+            {classInfo.teacher && classwork.author && (classwork.author === userInfo._id || classInfo.teacher.includes(userInfo._id) || classInfo.owner === userInfo._id)?
             <div className = "classwork-modal" id = "answers">
                 <div className="classwork-content container">
                     <span className="classwork-close" onClick = {closeAnswer}>&times;</span>

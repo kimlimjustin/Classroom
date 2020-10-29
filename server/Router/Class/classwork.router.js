@@ -114,6 +114,7 @@ router.get('/get/answer/:classwork', jsonParser, (req, res) => {
     const classworkId = req.params.classwork;
     Classwork.findById(classworkId, (err, classwork) => {
         if(err) res.status(500).json("Something went wrong.")
+        else if(!classwork) res.status(404).json("Classwork not found.")
         else res.json(classwork.answer)
     })
 })

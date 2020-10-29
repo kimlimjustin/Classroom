@@ -3,6 +3,7 @@ import Axios from "axios";
 import URL from "../../Static/Backend.url.static";
 import ClassNavbar from "../Navbar/class.navbar";
 import InfoById from "../../Library/InfoById";
+import DefaultProfile from "../../Icons/profile.png";
 
 Object.size = function(obj) {
     var size = 0, key;
@@ -51,18 +52,22 @@ const Class = (params) => {
                     <p className="box-text classinfo-description">{classInfo.description}</p>
                     <h4>Class code: {classInfo.code}</h4>
                 </div>
-                {Object.size(authorInfo) > 0? classworks.map(classwork => (
-                    <div className="margin-top-bottom box box-shadow classwork" key = {classwork._id} onClick = {() => {
+                {Object.size(authorInfo) > 0? classworks.map(classwork => {
+                    if(authorInfo[classwork.author]){
+                    return <div className="margin-top-bottom box box-shadow classwork" key = {classwork._id} onClick = {() => {
                         if(classwork.types === "material") window.location = `/class/${classInfo._id}/m/${classwork._id}`
                         else if(classwork.types === "short answer") window.location = `/class/${classInfo._id}/sa/${classwork._id}`
                         else if(classwork.types === "long answer") window.location = `/class/${classInfo._id}/la/${classwork._id}`
                         }}>
-                        <h3 className="classwork-title"><img src = {`${URL}/${authorInfo[classwork.author].profile_picture.filename}`} alt = "Author" className="pp" />
+                        <h3 className="classwork-title">
+                        {authorInfo[classwork.author].profile_picture?
+                        <img src = { `${URL}/${authorInfo[classwork.author].profile_picture.filename}`} alt = "Author" className="pp" />
+                        :<img src = { DefaultProfile} alt = "Author" className="pp" />}
                         {authorInfo[classwork.author].username} posted a new {classwork.types === "material"? <span>material</span>:<span>Assignment</span>}: 
                         &nbsp;{classwork.title}</h3>
                         <p>{classwork.description}</p>
-                    </div>
-                )): null}
+                    </div>} else return null;
+                }): null}
             </div>
         </div>
     )

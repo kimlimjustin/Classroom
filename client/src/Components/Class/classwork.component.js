@@ -5,6 +5,7 @@ import InfoById from '../../Library/InfoById';
 import UserInfo from '../../Library/UserInfo';
 import URL from '../../Static/Backend.url.static';
 import ClassNavbar from '../Navbar/class.navbar';
+import DefaultProfile from "../../Icons/profile.png";
 
 Object.size = function(obj) {
     var size = 0, key;
@@ -96,12 +97,15 @@ const Classwork = (params) => {
                 <button className="margin-top-bottom btn btn-dark add-classwork-btn" onClick = {openClasswork}>Add classwork +</button>
                 :null}
                 {Object.size(authorInfo) > 0? classworks.map(classwork => {
-                    if(classwork.types !== "material"){
+                    if(classwork.types !== "material" && authorInfo[classwork.author]){
                     return <div className="box box-shadow classwork" key = {classwork._id} onClick = {() => {
                         if(classwork.types === "short answer") window.location = `/class/${ClassInfo._id}/sa/${classwork._id}`;
                         else if(classwork.types === "long answer") window.location = `/class/${ClassInfo._id}/la/${classwork._id}`;
                         }}>
-                        <h3 className="classwork-title"><img src = {`${URL}/${authorInfo[classwork.author].profile_picture.filename}`} alt = "Author" className="pp" />
+                        <h3 className="classwork-title">
+                        {authorInfo[classwork.author].profile_picture?
+                        <img src = {`${URL}/${authorInfo[classwork.author].profile_picture.filename}`} alt = "Author" className="pp" />
+                        :<img src = { DefaultProfile} alt = "Author" className="pp" />}
                         {authorInfo[classwork.author].username} posted a new {classwork.types === "material"? <span>material</span>:<span>Assignment</span>}: 
                         &nbsp;{classwork.title}</h3>
                         <p>{classwork.description}</p>
