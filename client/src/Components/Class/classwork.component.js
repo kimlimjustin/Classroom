@@ -84,6 +84,7 @@ const Classwork = (params) => {
         .then(result => {
             if(inputType === "material") window.location = `/class/${ClassInfo._id}/m/${result.data.id}`
             else if(inputType === "short answer") window.location = `/class/${ClassInfo._id}/sa/${result.data.id}`
+            else if(inputType === "long answer") window.location = `/class/${ClassInfo._id}/la/${result.data.id}`
         })
     }
 
@@ -97,7 +98,8 @@ const Classwork = (params) => {
                 {Object.size(authorInfo) > 0? classworks.map(classwork => {
                     if(classwork.types !== "material"){
                     return <div className="box box-shadow classwork" key = {classwork._id} onClick = {() => {
-                        if(classwork.types === "short answer") window.location = `/class/${ClassInfo._id}/sa/${classwork._id}`
+                        if(classwork.types === "short answer") window.location = `/class/${ClassInfo._id}/sa/${classwork._id}`;
+                        else if(classwork.types === "long answer") window.location = `/class/${ClassInfo._id}/la/${classwork._id}`;
                         }}>
                         <h3 className="classwork-title"><img src = {`${URL}/${authorInfo[classwork.author].profile_picture.filename}`} alt = "Author" className="pp" />
                         {authorInfo[classwork.author].username} posted a new {classwork.types === "material"? <span>material</span>:<span>Assignment</span>}: 

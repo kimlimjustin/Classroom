@@ -8,6 +8,7 @@ import Classwork from "./Components/Class/classwork.component";
 import JoinClass from "./Components/Class/join_class.component";
 import People from "./Components/Class/people.component";
 import ClassSetting from "./Components/Class/setting.component";
+import LongAnswer from "./Components/Classwork/long-answer.classwork";
 import Material from "./Components/Classwork/material.classwork";
 import ShortAnswer from "./Components/Classwork/short-asnwer.classwork";
 import ZeroFourZero from "./Components/Error/404.component";
@@ -29,6 +30,7 @@ const App = () => (
             <Route path = "/profile" component = {Profile} />
             <Route path = "/archived" component = {Archived} />
             <Route path = "/class/join" component = {JoinClass} />
+            <Route path = "/class/:classId/la/:classworkId" component = {LongAnswer} />
             <Route path = "/class/:classId/sa/:classworkId" component = {ShortAnswer} />
             <Route path = "/class/:classId/m/:materialId" component = {Material} />
             <Route path = "/class/:classId/classwork" component = {Classwork} />
