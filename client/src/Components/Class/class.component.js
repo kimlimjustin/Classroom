@@ -52,7 +52,10 @@ const Class = (params) => {
                     <h4>Class code: {classInfo.code}</h4>
                 </div>
                 {Object.size(authorInfo) > 0? classworks.map(classwork => (
-                    <div className="margin-top-bottom box box-shadow" key = {classwork._id} onClick = {() => window.location = `/class/${classInfo._id}/m/${classwork._id}`}>
+                    <div className="margin-top-bottom box box-shadow classwork" key = {classwork._id} onClick = {() => {
+                        if(classwork.types === "material") window.location = `/class/${classInfo._id}/m/${classwork._id}`
+                        else if(classwork.types === "short answer") window.location = `/class/${classInfo._id}/sa/${classwork._id}`
+                        }}>
                         <h3 className="classwork-title"><img src = {`${URL}/${authorInfo[classwork.author].profile_picture.filename}`} alt = "Author" className="pp" />
                         {authorInfo[classwork.author].username} posted a new {classwork.types === "material"? <span>material</span>:<span>Assignment</span>}: 
                         &nbsp;{classwork.title}</h3>

@@ -120,6 +120,10 @@
     cursor: pointer;
 }
 
+.classwork{
+    cursor: pointer;
+}
+
 .classwork-modal{
     display: none;
     position: fixed;

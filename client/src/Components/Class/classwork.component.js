@@ -63,7 +63,10 @@ const Classwork = (params) => {
             title: inputTitle, description: inputDescription, _class: ClassInfo._id, type: inputType, 
             author: userInfo._id, duedate: inputDeadline, token: userInfo.token, options: inputChoices
         })
-        .then(result => window.location = `/class/${ClassInfo._id}/m/${result.data.id}`)
+        .then(result => {
+            if(inputType === "material") window.location = `/class/${ClassInfo._id}/m/${result.data.id}`
+            else if(inputType === "short answer") window.location = `/class/${ClassInfo._id}/sa/${result.data.id}`
+        })
     }
 
     return (

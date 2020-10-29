@@ -33,12 +33,12 @@ router.get('/class/get/:class', jsonParser, (req, res) => {
         if(err) res.status(500).json("Something went wrong.")
         else if(!_class) res.status(404).json("Class not found.")
         else{
-            Classwork.find({class: classId}, (err, classwork) => {
-                if(err) res.status(500).json("Something went wrong.")
-                else{
-                    res.json(classwork)
-                }
+            Classwork.find({class: classId})
+            .sort({_id: -1})
+            .then(classworks => {
+                if(classworks) res.json(classworks)
             })
+            .catch(() => res.status(500).json("Something went wrong."))
         }
     })
 })
@@ -51,20 +51,26 @@ router.get('/get/:classwork', jsonParser, (req, res) => {
 })
 
 router.post('/update/:id', jsonParser, (req, res) => {
-    const {title, description, duedate, type, options}  = req.body;
+    const {title, description, duedate, type, options, token}  = req.body;
     const id = req.params.id;
     Classwork.findById(id, (err, classwork) => {
         if(err) res.status(500).json("Something went wrong.")
         else if(!classwork) res.status(404).json("Classwork not found.")
         else{
-            classwork.title = title;
-            classwork.description = description;
-            classwork.duedate = duedate;
-            classwork.type = type;
-            classwork.options = options;
-            classwork.save()
-            .then(() => res.json({message:"Success", classwork}))
-            .catch(err => res.status(400).json("Error: "+err));
+            User.findOne({_id: classwork.author, token}, (err, user) => {
+                if(err) res.status(500).json("Something went wrong.")
+                else if(!user) res.status(403).json("Permission denied.")
+                else{
+                    classwork.title = title;
+                    classwork.description = description;
+                    classwork.duedate = duedate;
+                    classwork.type = type;
+                    classwork.options = options;
+                    classwork.save()
+                    .then(() => res.json({message:"Success", classwork}))
+                    .catch(err => res.status(400).json("Error: "+err));
+                }
+            })
         }
     })
 })
@@ -89,12 +95,13 @@ router.post('/submit/answer', jsonParser, (req, res) => {
         if(err) res.status(500).json("Something went wrong.")
         else if(!user) res.status(403).json("Permission denied.")
         else{
-            Classwork.find({_id: classwork}, (err, classwork) => {
+            Classwork.findOne({_id: classwork}, (err, classwork) => {
                 if(err) res.status(500).json("Something went wrong.")
                 else if(!classwork) res.status(404).json("Classwork not found.")
                 else{
-                    let response = {_id: nanoid(20),student: user, answer, answeredOn: new Date()}
-                    Classwork.answer.push(response)
+                    let response = {_id: nanoid(20),student: user, answer, answeredOn: new Date()};
+                    classwork.answer.push(response)
+                    classwork.save()
                     .then(() => res.json("Success"))
                     .catch(err => res.status(400).json("Error: "+err))
                 }

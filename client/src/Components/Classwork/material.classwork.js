@@ -23,9 +23,11 @@ const Material = (params) => {
         .then(() => {
             Axios.get(`${URL}/classwork/get/${materialId}`)
             .then(res => {
-                setMaterial(() => res.data);
-                setInputTitle(res.data.title);
-                setInputDescription(res.data.description);
+                if(res.data.types === "material"){
+                    setMaterial(() => res.data);
+                    setInputTitle(res.data.title);
+                    setInputDescription(res.data.description);
+                }else window.location = `/class/${classId}`
             })
             .catch(() => window.location = `/class/${classId}`)
         })
@@ -53,7 +55,8 @@ const Material = (params) => {
 
     const updateClasswork = e => {
         e.preventDefault();
-        Axios.post(`${URL}/classwork/update/${material._id}`, {title: inputTitle, description: inputDescription})
+        const token = new Cookies().get('token');
+        Axios.post(`${URL}/classwork/update/${material._id}`, {title: inputTitle, description: inputDescription, token})
         .then(res => {
             setMaterial(res.data.classwork);
             const classwork = document.getElementById("classwork");
@@ -76,8 +79,8 @@ const Material = (params) => {
                 <div className="margin-top-bottom box box-shadow">
                     <h1 className="box-title">{material.title}</h1>
                     <p className="box-text material-description">{material.description}</p>
-                    <h4>posted {moment(material.createdAt).fromNow()} 
-                    {material.createdAt !== material.updatedAt? <span>(updated {moment(material.updatedAt).fromNow()})</span>: null} by {author}</h4>
+                    <p>posted {moment(material.createdAt).fromNow()} 
+                    {material.createdAt !== material.updatedAt? <span>(updated {moment(material.updatedAt).fromNow()})</span>: null} by {author}</p>
                     {material.author === userInfo._id? <div><h3><span className="link" onClick = {openMaterial}>Update</span></h3>
                     <h3><span className="link text-danger" onClick = {deleteMaterial}>Delete</span></h3></div>:null}
                 </div>
