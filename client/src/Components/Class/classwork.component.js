@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
+import InfoById from '../../Library/InfoById';
 import UserInfo from '../../Library/UserInfo';
 import URL from '../../Static/Backend.url.static';
 import ClassNavbar from '../Navbar/class.navbar';
@@ -17,6 +18,8 @@ Object.size = function(obj) {
 const Classwork = (params) => {
     const [ClassInfo, setClassInfo] = useState({});
     const [userInfo, setUserInfo] = useState(null);
+    const [classworks, setClassworks] = useState([]);
+    const [authorInfo, setAuthorInfo] = useState({});
     const [type] = useState([
         {label: "Material", value: "material"}, 
         {label: "Short answer question", value: "short answer"},
@@ -41,6 +44,21 @@ const Classwork = (params) => {
         Axios.get(`${URL}/class/get/class/${classId}`)
         .then(res => setClassInfo(() => res.data))
     }, [params.match.params.classId])
+
+    useEffect(() => {
+        const classId = params.match.params.classId;
+        Axios.get(`${URL}/classwork/class/get/${classId}`)
+        .then(res => setClassworks(res.data))
+    }, [params.match.params.classId])
+
+    useEffect(() => {
+        if(classworks.length > 0){
+            classworks.forEach(classwork => {
+                InfoById(classwork.author)
+                .then(result => setAuthorInfo(prev => ({...prev, [classwork.author]: result})))
+            })
+        }
+    }, [classworks])
     
     const openClasswork = () => {
         const classwork = document.getElementById("classwork")
@@ -76,6 +94,18 @@ const Classwork = (params) => {
                 {Object.size(ClassInfo) > 0 && userInfo!== null && (ClassInfo.owner === userInfo._id || ClassInfo.teacher.includes(userInfo._id))?
                 <button className="margin-top-bottom btn btn-dark add-classwork-btn" onClick = {openClasswork}>Add classwork +</button>
                 :null}
+                {Object.size(authorInfo) > 0? classworks.map(classwork => {
+                    if(classwork.types !== "material"){
+                    return <div className="box box-shadow classwork" key = {classwork._id} onClick = {() => {
+                        if(classwork.types === "short answer") window.location = `/class/${ClassInfo._id}/sa/${classwork._id}`
+                        }}>
+                        <h3 className="classwork-title"><img src = {`${URL}/${authorInfo[classwork.author].profile_picture.filename}`} alt = "Author" className="pp" />
+                        {authorInfo[classwork.author].username} posted a new {classwork.types === "material"? <span>material</span>:<span>Assignment</span>}: 
+                        &nbsp;{classwork.title}</h3>
+                        <p>{classwork.description}</p>
+                    </div>
+                    }else return null;
+                }): null}
             </div>
             <div className="classwork-modal" id="classwork">
                 <div className="classwork-content container">
