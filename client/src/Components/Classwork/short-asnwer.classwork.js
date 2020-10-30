@@ -173,7 +173,8 @@ const ShortAnswer = (params) => {
                     <span className="classwork-close" onClick = {closeAnswer}>&times;</span>
                     <h1 className="box-title">Answers by students:</h1>
                     {answers.map(answer => {
-                        return <p key = {answer._id}>{answer.student.username} answered <b>{answer.answer}</b> {moment(answer.answeredOn).fromNow()}</p>
+                        return <p key = {answer._id}>{answer.student.username} answered <b>{answer.answer}</b> {moment(answer.answeredOn).fromNow()}
+                        {answer.answeredOn > classwork.duedate? <span><b> (Turned in late)</b></span>:null}</p>
                     })}
                 </div>
             </div>
