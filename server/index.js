@@ -3,7 +3,6 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const socketio = require('socket.io');
 const path = require('path');
 
 //load the environment variable
@@ -12,7 +11,6 @@ require('dotenv').config();
 //Create server for socket.io
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server);
 
 app.use((req, res, next) => {
 	res.setHeader("Access-Control-Allow-Origin", process.env.CLIENT_URL)
