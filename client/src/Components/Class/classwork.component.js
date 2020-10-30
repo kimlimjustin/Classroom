@@ -87,6 +87,7 @@ const Classwork = (params) => {
             else if(inputType === "short answer") window.location = `/class/${ClassInfo._id}/sa/${result.data.id}`
             else if(inputType === "long answer") window.location = `/class/${ClassInfo._id}/la/${result.data.id}`
             else if(inputType === "multiple choice") window.location = `/class/${ClassInfo._id}/mc/${result.data.id}`
+            else if(inputType === "checkbox") window.location = `/class/${ClassInfo._id}/c/${result.data.id}`
         })
     }
 
@@ -103,6 +104,7 @@ const Classwork = (params) => {
                         if(classwork.types === "short answer") window.location = `/class/${ClassInfo._id}/sa/${classwork._id}`;
                         else if(classwork.types === "long answer") window.location = `/class/${ClassInfo._id}/la/${classwork._id}`;
                         else if(classwork.types === "multiple choice") window.location = `/class/${ClassInfo._id}/mc/${classwork._id}`
+                        else if(classwork.types === "checkbox") window.location = `/class/${ClassInfo._id}/c/${classwork._id}`
                         }}>
                         <h3 className="classwork-title">
                         {authorInfo[classwork.author].profile_picture?

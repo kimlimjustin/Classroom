@@ -59,6 +59,7 @@ const Class = (params) => {
                         else if(classwork.types === "short answer") window.location = `/class/${classInfo._id}/sa/${classwork._id}`
                         else if(classwork.types === "long answer") window.location = `/class/${classInfo._id}/la/${classwork._id}`
                         else if(classwork.types === "multiple choice") window.location = `/class/${classInfo._id}/mc/${classwork._id}`
+                        else if(classwork.types === "checkbox") window.location = `/class/${classInfo._id}/c/${classwork._id}`
                         }}>
                         <h3 className="classwork-title">
                         {authorInfo[classwork.author].profile_picture?
