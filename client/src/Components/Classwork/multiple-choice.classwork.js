@@ -8,6 +8,8 @@ import moment from "moment";
 import InfoById from "../../Library/InfoById";
 
 const MultipleChoice = (params) => {
+    const [answered, setAnswered] = useState(false);
+    const [answers, setAnswers] = useState([]);
     const [classInfo, setClassInfo] = useState('');
     const [author, setAuthor] = useState('');
     const [userInfo, setUserInfo] = useState('');
@@ -15,11 +17,13 @@ const MultipleChoice = (params) => {
     const classId = params.match.params.classId;
     const classworkId = params.match.params.classworkId;
     const classworkModal = document.getElementById("classwork");
+    const answerModal = document.getElementById("answers");
     const [inputTitle, setInputTitle] = useState('');
     const [inputDescription, setInputDescription] = useState('');
     const [inputDeadline, setInputDeadline] = useState('');
     const [inputChoices, setInputChoices] = useState([]);
     const [inputNewChoices, setInputNewChoices] = useState('');
+    const [inputAnswer, setInputAnswer] = useState('');
 
     useEffect(() => {
         const token = new Cookies().get('token');
@@ -46,11 +50,27 @@ const MultipleChoice = (params) => {
     }, [classworkId, classId])
 
     useEffect(() => {
+        Axios.get(`${URL}/classwork/get/answer/${classworkId}`)
+        .then(res => setAnswers(res.data))
+    }, [classworkId])
+
+    useEffect(() => {
         if(classwork.author){
             InfoById(classwork.author)
             .then(result => setAuthor(result.username))
         }
     }, [classwork])
+
+    useEffect(() => {
+        const scan = (answers, userInfo)=>{
+            let _answered = false
+            answers.forEach(answer => {
+                if(answer.student._id === userInfo._id) _answered = true
+            })
+            return _answered
+        }
+        setAnswered(scan(answers, userInfo))
+    }, [answers, userInfo])
 
     const openClasswork = () => classworkModal.style.display = "block";
 
@@ -67,7 +87,7 @@ const MultipleChoice = (params) => {
     const updateClasswork = e => {
         e.preventDefault();
         const token = new Cookies().get('token');
-        Axios.post(`${URL}/classwork/update/${classwork._id}`, {title: inputTitle, description: inputDescription, duedate: inputDeadline, token})
+        Axios.post(`${URL}/classwork/update/${classwork._id}`, {title: inputTitle, description: inputDescription, duedate: inputDeadline, token, options:inputChoices})
         .then(res => {
             setClasswork(res.data.classwork);
             classworkModal.style.display = "none";
@@ -78,6 +98,18 @@ const MultipleChoice = (params) => {
         setInputChoices(choices => [...choices, inputNewChoices]);
         setInputNewChoices('');
     }
+
+    const Answer = e => {
+        e.preventDefault();
+        const token = new Cookies().get('token');
+        if(!answered){
+            Axios.post(`${URL}/classwork/submit/answer`, {token, classwork: classwork._id, answer: inputAnswer, student: userInfo._id})
+            .then(res => setAnswers(res.data.answers))
+        }
+    }
+
+    const showAnswer = () => answerModal.style.display = "block";
+    const closeAnswer = () => answerModal.style.display = "none";
 
     return(
         <div className = "container-fluid">
@@ -92,6 +124,34 @@ const MultipleChoice = (params) => {
                     {classwork.author === userInfo._id? <div><h3><span className="link" onClick = {openClasswork}>Edit</span></h3>
                     <h3><span className="link text-danger" onClick = {deleteClasswork}>Delete</span></h3></div>:null}
                 </div>
+                {classInfo.teacher && !(classInfo.teacher.includes(userInfo._id) || classInfo.owner === userInfo._id)?
+                <div className="col-3">
+                    {!answered?
+                    <form className="box box-shadow" onSubmit = {Answer}>
+                        <h1 className="box-title">Answer:</h1>
+                        <div onChange = {({target: {value}}) => setInputAnswer(value)}>
+                            {classwork.options && classwork.options.map(option => (
+                                <div className="form-group" key = {option}>
+                                    <input type = "radio" className="form-control" id={option} name="answer" value={option} />
+                                    <label htmlFor ={option}>{option}</label>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="form-group">
+                            <input className="btn btn-dark form-control" type ="submit" />
+                        </div>
+                    </form>:
+                    <div className="box box-shadow">
+                        <p>You have submitted.</p>
+                    </div>}
+                </div>:
+                <div className="col-3">
+                    <div className="box box-shadow">
+                        <h1 className="box-title">Answers:</h1>
+                        <p className="box-text">{classwork.answer?classwork.answer.length:null} answered</p>
+                        <button className="form-control btn btn-dark" onClick = {showAnswer}>See answers</button>
+                    </div>
+                </div>}
             </div>
             {classwork.author === userInfo._id?
             <div className="classwork-modal" id="classwork">
@@ -104,9 +164,9 @@ const MultipleChoice = (params) => {
                             <input type = "text" className = "form-control" value ={inputTitle} onChange = {({target: {value}}) => setInputTitle(value)} required />
                         </div>
                         <div className="form-group">
-                            <p className="form-label">Description:</p>
+                            <p className="form-label">Description: (optional)</p>
                             <textarea rows="5" type = "text" className="form-control" value={inputDescription} 
-                            onChange = {({target: {value}}) => setInputDescription(value)} required />
+                            onChange = {({target: {value}}) => setInputDescription(value)} />
                         </div>
                         <div className="form-group">
                             <p className="form-label">Due date (optional):</p>
@@ -133,6 +193,18 @@ const MultipleChoice = (params) => {
                     </form>
                 </div>
             </div>:null}
+            {classInfo.teacher && classwork.author && (classwork.author === userInfo._id || classInfo.teacher.includes(userInfo._id) || classInfo.owner === userInfo._id)?
+            <div className = "classwork-modal" id = "answers">
+                <div className="classwork-content container">
+                    <span className="classwork-close" onClick = {closeAnswer}>&times;</span>
+                    <h1 className="box-title">Answers by students:</h1>
+                    {answers.map(answer => {
+                        return <p key = {answer._id}>{answer.student.username} answered <b>{answer.answer}</b> {moment(answer.answeredOn).fromNow()}
+                        {answer.answeredOn > classwork.duedate? <span><b> (Turned in late)</b></span>:null}</p>
+                    })}
+                </div>
+            </div>
+            :null}
         </div>
     )
 }
