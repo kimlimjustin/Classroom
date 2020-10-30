@@ -58,12 +58,13 @@ const Class = (params) => {
                         if(classwork.types === "material") window.location = `/class/${classInfo._id}/m/${classwork._id}`
                         else if(classwork.types === "short answer") window.location = `/class/${classInfo._id}/sa/${classwork._id}`
                         else if(classwork.types === "long answer") window.location = `/class/${classInfo._id}/la/${classwork._id}`
+                        else if(classwork.types === "multiple choice") window.location = `/class/${classInfo._id}/mc/${classwork._id}`
                         }}>
                         <h3 className="classwork-title">
                         {authorInfo[classwork.author].profile_picture?
                         <img src = { `${URL}/${authorInfo[classwork.author].profile_picture.filename}`} alt = "Author" className="pp" />
                         :<img src = { DefaultProfile} alt = "Author" className="pp" />}
-                        {authorInfo[classwork.author].username} posted a new {classwork.types === "material"? <span>material</span>:<span>Assignment</span>}: 
+                        &nbsp;{authorInfo[classwork.author].username} posted a new {classwork.types === "material"? <span>material</span>:<span>Assignment</span>}: 
                         &nbsp;{classwork.title}</h3>
                         <p>{classwork.description}</p>
                     </div>} else return null;

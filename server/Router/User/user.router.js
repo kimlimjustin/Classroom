@@ -6,7 +6,7 @@ const User = require('../../models/user.model');
 const fs = require('fs');
 const sharp = require('sharp');
 const multer = require('multer');
-const path = require('path')
+const path = require('path');
 
 //Get Security key for token generating in .env file
 require('dotenv').config();
@@ -55,14 +55,20 @@ router.post('/register', jsonParser, (req, res) => {
         if(err) res.status(500).json("Error has occured. Please refresh page")
         else if(user) res.status(400).json("Email has been token.")
         else{
-            //create the user account
-            const token = generateToken();
-            const newUser = new User({username, password, email, token});
-            newUser.save()
-            .then(() => {
-                res.json({"Message": "Success", token});
+            User.findOne({username}, (err, user) => {
+                if(err) res.status(500).json("Error has occured. Please refresh page")
+                else if(user) res.status(400).json("Username has been token.")
+                else{
+                    //create the user account
+                    const token = generateToken();
+                    const newUser = new User({username, password, email, token});
+                    newUser.save()
+                    .then(() => {
+                        res.json({"Message": "Success", token});
+                    })
+                    .catch(err => res.status(500).json("Error has occured. Please refresh page"));
+                }
             })
-            .catch(err => res.status(500).json("Error has occured. Please refresh page"));
         }
     })
 })

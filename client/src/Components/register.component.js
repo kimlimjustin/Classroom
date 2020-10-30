@@ -23,7 +23,7 @@ const Register = () => {
                 //return to home page
                 window.location = "/";
             })
-            .catch(err => setError(err.response.data));
+            .catch(err => setError(err.response.data.message));
         }
     }
 

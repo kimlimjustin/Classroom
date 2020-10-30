@@ -15,7 +15,7 @@ const ShortAnswer = (params) => {
     const [inputTitle, setInputTitle] = useState('');
     const [inputDescription, setInputDescription] = useState('');
     const [inputAnswer, setInputAnswer] = useState('');
-    const [inputDeadline, setInputDealine] = useState('');
+    const [inputDeadline, setInputDeadline] = useState('');
     const [author, setAuthor] = useState('');
     const [answers, setAnswers] = useState([]);
     const classId = params.match.params.classId;
@@ -41,7 +41,7 @@ const ShortAnswer = (params) => {
                 setClasswork(() => res.data);
                 setInputTitle(res.data.title);
                 setInputDescription(res.data.description);
-                if(res.data.duedate) setInputDealine(res.data.duedate.substr(0, 16));
+                if(res.data.duedate) setInputDeadline(res.data.duedate.substr(0, 16));
             }else window.location = `/class/${classId}`
         })
         .catch(() => window.location = `/class/${classId}`)
@@ -97,7 +97,7 @@ const ShortAnswer = (params) => {
         const token = new Cookies().get('token');
         if(!answered){
             Axios.post(`${URL}/classwork/submit/answer`, {token, classwork: classwork._id, answer: inputAnswer, student: userInfo._id})
-            .then(() => setAnswered(true))
+            .then(res => setAnswers(res.data.answers))
         }
     }
 
@@ -158,7 +158,7 @@ const ShortAnswer = (params) => {
                         </div>
                         <div className="form-group">
                             <p className="form-label">Due date (optional):</p>
-                            <input type = "datetime-local" className="form-control" value={inputDeadline} onChange = {({target: {value}}) => setInputDealine(value)}
+                            <input type = "datetime-local" className="form-control" value={inputDeadline} onChange = {({target: {value}}) => setInputDeadline(value)}
                             min={new Date().toJSON().substr(0, 16)} />
                         </div>
                         <div className="form-group">

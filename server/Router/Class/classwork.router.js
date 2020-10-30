@@ -102,7 +102,7 @@ router.post('/submit/answer', jsonParser, (req, res) => {
                     let response = {_id: nanoid(20),student: user, answer, answeredOn: new Date()};
                     classwork.answer.push(response)
                     classwork.save()
-                    .then(() => res.json("Success"))
+                    .then(() => res.json({message:"Success", answers: classwork.answer}))
                     .catch(err => res.status(400).json("Error: "+err))
                 }
             })

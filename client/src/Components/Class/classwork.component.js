@@ -86,6 +86,7 @@ const Classwork = (params) => {
             if(inputType === "material") window.location = `/class/${ClassInfo._id}/m/${result.data.id}`
             else if(inputType === "short answer") window.location = `/class/${ClassInfo._id}/sa/${result.data.id}`
             else if(inputType === "long answer") window.location = `/class/${ClassInfo._id}/la/${result.data.id}`
+            else if(inputType === "multiple choice") window.location = `/class/${ClassInfo._id}/mc/${result.data.id}`
         })
     }
 
@@ -101,12 +102,13 @@ const Classwork = (params) => {
                     return <div className="box box-shadow classwork" key = {classwork._id} onClick = {() => {
                         if(classwork.types === "short answer") window.location = `/class/${ClassInfo._id}/sa/${classwork._id}`;
                         else if(classwork.types === "long answer") window.location = `/class/${ClassInfo._id}/la/${classwork._id}`;
+                        else if(classwork.types === "multiple choice") window.location = `/class/${ClassInfo._id}/mc/${classwork._id}`
                         }}>
                         <h3 className="classwork-title">
                         {authorInfo[classwork.author].profile_picture?
                         <img src = {`${URL}/${authorInfo[classwork.author].profile_picture.filename}`} alt = "Author" className="pp" />
                         :<img src = { DefaultProfile} alt = "Author" className="pp" />}
-                        {authorInfo[classwork.author].username} posted a new {classwork.types === "material"? <span>material</span>:<span>Assignment</span>}: 
+                        &nbsp;{authorInfo[classwork.author].username} posted a new {classwork.types === "material"? <span>material</span>:<span>Assignment</span>}: 
                         &nbsp;{classwork.title}</h3>
                         <p>{classwork.description}</p>
                     </div>
