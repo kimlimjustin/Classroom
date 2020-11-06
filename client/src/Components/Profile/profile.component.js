@@ -3,10 +3,10 @@ import UserInfo from "../../Library/UserInfo";
 import Cookies from "universal-cookie";
 import HomeNavbar from "../Navbar/home.navbar";
 import DefaultProfilePicture from "../../Icons/profile.png";
-import URL from "../../Static/Backend.url.static";
 import Axios from "axios";
 import { NavLink } from "react-router-dom";
 
+const URL = process.env.REACT_APP_BACKEND_URL;
 const Profile = () => {
     const [userInfo, setUserInfo] = useState('');
     const [profile, setProfile] = useState(null);

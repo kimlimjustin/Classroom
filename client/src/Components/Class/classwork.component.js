@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
 import InfoById from '../../Library/InfoById';
 import UserInfo from '../../Library/UserInfo';
-import URL from '../../Static/Backend.url.static';
 import ClassNavbar from '../Navbar/class.navbar';
 import DefaultProfile from "../../Icons/profile.png";
+const URL = process.env.REACT_APP_BACKEND_URL;
 
 Object.size = function(obj) {
     var size = 0, key;

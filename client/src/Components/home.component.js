@@ -3,7 +3,7 @@ import UserInfo from "../Library/UserInfo";
 import Cookies from "universal-cookie";
 import HomeNavbar from "./Navbar/home.navbar";
 import Axios from "axios";
-import URL from "../Static/Backend.url.static";
+const URL = process.env.REACT_APP_BACKEND_URL;
 
 
 const Home = () => {

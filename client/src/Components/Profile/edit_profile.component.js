@@ -2,8 +2,9 @@ import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
 import UserInfo from '../../Library/UserInfo';
-import URL from '../../Static/Backend.url.static';
 import HomeNavbar from '../Navbar/home.navbar';
+
+const URL = process.env.REACT_APP_BACKEND_URL;
 
 const EditProfile = () => {
     const [inputUsername, setInputUsername] = useState('');

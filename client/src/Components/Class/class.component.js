@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
-import URL from "../../Static/Backend.url.static";
 import ClassNavbar from "../Navbar/class.navbar";
 import InfoById from "../../Library/InfoById";
 import DefaultProfile from "../../Icons/profile.png";
+const URL = process.env.REACT_APP_BACKEND_URL;
 
 Object.size = function(obj) {
     var size = 0, key;

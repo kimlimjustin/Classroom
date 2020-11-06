@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Axios from "axios";
-import URL from "../Static/Backend.url.static";
 import Cookies from "universal-cookie";
 import { NavLink } from "react-router-dom";
 
+const URL = process.env.REACT_APP_BACKEND_URL;
 const Login = () => {
     const [inputEmail, setInputEmail] = useState('');
     const [inputPassword, setInputPassword] = useState('');

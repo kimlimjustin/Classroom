@@ -1,10 +1,9 @@
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import InfoById from "../../Library/InfoById";
-import URL from "../../Static/Backend.url.static";
 import ClassNavbar from "../Navbar/class.navbar";
 import DefaultProfile from "../../Icons/profile.png";
-
+const URL = process.env.REACT_APP_BACKEND_URL;
 const People = (params) => {
     const [classInfo, setClassInfo] = useState({});
     const [teachers, setTeachers] = useState([]);

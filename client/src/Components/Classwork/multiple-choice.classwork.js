@@ -2,10 +2,10 @@ import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import UserInfo from "../../Library/UserInfo";
-import URL from "../../Static/Backend.url.static";
 import ClassNavbar from "../Navbar/class.navbar";
 import moment from "moment";
 import InfoById from "../../Library/InfoById";
+const URL = process.env.REACT_APP_BACKEND_URL;
 
 const MultipleChoice = (params) => {
     const [answered, setAnswered] = useState(false);
