@@ -1,5 +1,9 @@
 # Classroom
 
+![Classroom demo](https://drive.google.com/uc?esport=view&id=14Iu2VRcHoCKUCUkF0iMCuyjcj9_TZ90a)
+
+#### Warning: although this project has some basics security such as hashed user password and others, this project is NOT secure enough in production. (Contribute to this project by making a pull request will be appreciated)
+
 How to run:
 
 - Clone this repository or fork it.
@@ -9,7 +13,7 @@ How to run:
   - store your database URI inside `ATLAS_URI` variable
   - store your security key inside `SECURITY_KEY` variable
   - store your client url inside `CLIENT_URL` variable
-    example:
+  - example:
   ```
   ATLAS_URI =mongodb+srv://admin:<password>@cluster0.8aezk.gcp.mongodb.net/classroom?retryWrites=true&w=majority
   SECURITY_KEY = D73373D9B4ED6FEC5B8B2DAF6WA929B1C7D14CDC88B196EBDCCEA77AFF7BB9
@@ -19,7 +23,7 @@ How to run:
 
   - store your security key inside `REACT_APP_SECURITY_KEY` variable, note that this value must same as `SECURITY_KEY` in `server/.env` file
   - store your server url inside `REACT_APP_BACKEND_URL` variable
-    example:
+  - example:
 
   ```
   REACT_APP_SECURITY_KEY = D73373D9B4ED6FEC5B8B2DAF6WA929B1C7D14CDC88B196EBDCCEA77AFF7BB9
