@@ -1,4 +1,4 @@
-const { default: Axios } = require("axios");
+import Axios from "axios"
 
 const URL = process.env.REACT_APP_BACKEND_URL;
 const SECURITY_KEY = process.env.REACT_APP_SECURITY_KEY;
@@ -11,4 +11,4 @@ const InfoById = async (userId) => {
     }else return undefined
 }
 
-module.exports = InfoById
+export default InfoById
